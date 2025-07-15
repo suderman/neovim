@@ -21,6 +21,22 @@
         "type": "github"
       }
     },
+    "codecompanion-lualine-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1752362922,
+        "narHash": "sha256-I8WIEeOjebd99ojgm+l6cMqh+U2bGeHsM7m5x2XI+eg=",
+        "owner": "franco-ruggeri",
+        "repo": "codecompanion-lualine.nvim",
+        "rev": "b264433444715bf07ee9f7d5015086b927ccf7f1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "franco-ruggeri",
+        "repo": "codecompanion-lualine.nvim",
+        "type": "github"
+      }
+    },
     "codecompanion-nvim": {
       "flake": false,
       "locked": {
@@ -34,6 +50,22 @@
       "original": {
         "owner": "olimorris",
         "repo": "codecompanion.nvim",
+        "type": "github"
+      }
+    },
+    "codecompanion-spinner-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1752362959,
+        "narHash": "sha256-m1JqxOjlfI00UMBuQ8RsVhxYIMxkdv38PQV5fRvEooM=",
+        "owner": "franco-ruggeri",
+        "repo": "codecompanion-spinner.nvim",
+        "rev": "af0dd1af48052c9e6ea0927ed9e5418438b62d84",
+        "type": "github"
+      },
+      "original": {
+        "owner": "franco-ruggeri",
+        "repo": "codecompanion-spinner.nvim",
         "type": "github"
       }
     },
@@ -241,7 +273,9 @@
     "root": {
       "inputs": {
         "blueprint": "blueprint",
+        "codecompanion-lualine-nvim": "codecompanion-lualine-nvim",
         "codecompanion-nvim": "codecompanion-nvim",
+        "codecompanion-spinner-nvim": "codecompanion-spinner-nvim",
         "devshell": "devshell",
         "mcp-hub": "mcp-hub",
         "mcphub-nvim": "mcphub-nvim",

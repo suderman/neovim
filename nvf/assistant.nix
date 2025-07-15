@@ -82,6 +82,7 @@ in {
           }
         '';
       extensions = {
+        spinner = {};
         mcphub = {
           callback = "mcphub.extensions.codecompanion";
           opts = {
@@ -96,13 +97,31 @@ in {
 
   # Override plugin with latest from Github (via flake input)
   # and include dependency of mcphub-nvim
-  vim.pluginOverrides.codecompanion-nvim = pkgs.vimUtils.buildVimPlugin {
-    pname = "codecompanion-nvim";
-    src = flake.inputs.codecompanion-nvim;
-    version = "main";
-    doCheck = false;
-    dependencies = [perSystem.mcphub-nvim.default];
-  };
+  vim.pluginOverrides.codecompanion-nvim = let
+    codecompanion-spinner-nvim = pkgs.vimUtils.buildVimPlugin {
+      pname = "codecompanion-spinner-nvim";
+      src = flake.inputs.codecompanion-spinner-nvim;
+      version = "main";
+      doCheck = false;
+    };
+    codecompanion-lualine-nvim = pkgs.vimUtils.buildVimPlugin {
+      pname = "codecompanion-lualine-nvim";
+      src = flake.inputs.codecompanion-lualine-nvim;
+      version = "main";
+      doCheck = false;
+    };
+  in
+    pkgs.vimUtils.buildVimPlugin {
+      pname = "codecompanion-nvim";
+      src = flake.inputs.codecompanion-nvim;
+      version = "main";
+      doCheck = false;
+      dependencies = [
+        perSystem.mcphub-nvim.default
+        codecompanion-spinner-nvim
+        codecompanion-lualine-nvim
+      ];
+    };
 
   # https://ravitemer.github.io/mcphub.nvim/extensions/avante.html
   vim.luaConfigRC."mcphub.nvim" =
@@ -138,7 +157,11 @@ in {
 
   # Add mcphub to lualine
   vim.statusline.lualine.extraActiveSection.x = [
-    "require('mcphub.extensions.lualine')"
+    # "require('mcphub.extensions.lualine')"
+    "codecompanion"
+    # ''icon = " "''
+    # ''spinner_symbols = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }''
+    # ''done_symbol = "✓"''
   ];
 
   vim.keymaps = [

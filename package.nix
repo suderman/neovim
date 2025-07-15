@@ -36,7 +36,18 @@
         '';
     }
   ];
+  # inherit
+  #   (flake.inputs.nvf.lib.neovimConfiguration {
+  #     inherit pkgs;
+  #     extraSpecialArgs = {
+  #       inherit flake perSystem;
+  #     };
+  #     modules = basic ++ (flake.lib.ls ./nvf) ++ local;
+  #   })
+  #   neovim
+  #   ;
 in
+  flake.inputs.nixpkgs.lib.recursiveUpdate
   (flake.inputs.nvf.lib.neovimConfiguration {
     inherit pkgs;
     extraSpecialArgs = {
@@ -44,3 +55,4 @@ in
     };
     modules = basic ++ (flake.lib.ls ./nvf) ++ local;
   }).neovim
+  {meta.license = [];}

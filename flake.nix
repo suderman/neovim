@@ -25,6 +25,14 @@
     codecompanion-nvim.url = "github:olimorris/codecompanion.nvim";
     codecompanion-nvim.flake = false;
 
+    # <https://github.com/franco-ruggeri/codecompanion-spinner.nvim>
+    codecompanion-spinner-nvim.url = "github:franco-ruggeri/codecompanion-spinner.nvim";
+    codecompanion-spinner-nvim.flake = false;
+
+    # <https://github.com/franco-ruggeri/codecompanion-lualine.nvim>
+    codecompanion-lualine-nvim.url = "github:franco-ruggeri/codecompanion-lualine.nvim";
+    codecompanion-lualine-nvim.flake = false;
+
     # <https://ravitemer.github.io/mcphub.nvim>
     mcphub-nvim.url = "github:ravitemer/mcphub.nvim";
     mcphub-nvim.inputs.nixpkgs.follows = "nixpkgs";
