@@ -4,13 +4,10 @@
   flake,
   ...
 }: let
-  inherit (flake.inputs.nvf.lib) neovimConfiguration;
-  inherit (flake.inputs.nixpkgs.lib) recursiveUpdate;
-
   basic = [
     {
-      # vim.viAlias = true;
-      # vim.vimAlias = true;
+      vim.viAlias = true;
+      vim.vimAlias = true;
       vim.enableLuaLoader = true;
       vim.globals.mapleader = " "; # use space as leader key
       vim.globals.maplocalleader = ","; # use comma as local leader key
@@ -39,35 +36,9 @@
         '';
     }
   ];
-  # inherit
-  #   (flake.inputs.nvf.lib.neovimConfiguration {
-  #     inherit pkgs;
-  #     extraSpecialArgs = {
-  #       inherit flake perSystem;
-  #     };
-  #     modules = basic ++ (flake.lib.ls ./nvf) ++ local;
-  #   })
-  #   neovim
-  #   ;
 in
-  flake.inputs.nixpkgs.lib.recursiveUpdate
   (flake.inputs.nvf.lib.neovimConfiguration {
     inherit pkgs;
-    extraSpecialArgs = {
-      inherit flake perSystem;
-    };
+    extraSpecialArgs = {inherit flake perSystem;};
     modules = basic ++ (flake.lib.ls ./nvf) ++ local;
   }).neovim
-  {
-    inherit (pkgs.neovim-unwrapped) lua;
-    meta = {
-      inherit
-        (pkgs.neovim-unwrapped.meta)
-        longDescription
-        license
-        teams
-        platforms
-        ;
-      homepage = "https://github.com/suderman/neovim";
-    };
-  }
