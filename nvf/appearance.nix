@@ -5,7 +5,7 @@
   ...
 }: let
   inherit (lib) mkForce;
-  inherit (flake.lib) mkLuaInline;
+  inherit (flake.lib) lua;
 in {
   vim.options.cursorlineopt = "line"; # line, screenline, number, both
   vim.options.breakindent = true; # indent wrapped lines to match line start
@@ -63,6 +63,12 @@ in {
   };
 
   vim.utility.snacks-nvim.setupOpts.input.enabled = true;
+  vim.utility.snacks-nvim.setupOpts.styles.input.keys = {
+    i_esc =
+      lua
+      # lua
+      "{ [2] = {'cmp_close', '<esc>'} }";
+  };
 
   vim.utility.snacks-nvim.setupOpts.notifier = {
     enabled = true;

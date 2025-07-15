@@ -35,7 +35,7 @@ in {
   };
 
   vim.ui.breadcrumbs = {
-    enable = true;
+    enable = false;
     navbuddy.enable = true;
   };
 
@@ -63,12 +63,4 @@ in {
     # (nmap "<M-/>" ":Lspsaga term_toggle<CR>" "Toggle terminal")
     # (tmap "<M-/>" ":Lspsaga term_toggle<CR>" "Toggle terminal")
   ];
-
-  # Better Quickfix
-  vim.lazy.plugins.nvim-bqf = {
-    package = pkgs.vimPlugins.nvim-bqf;
-  };
-  vim.luaConfigRC.nvim-bqf = ''
-    require('bqf').setup{}
-  '';
 }

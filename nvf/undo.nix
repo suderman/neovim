@@ -1,6 +1,6 @@
-{ flake, ... }: let
-  inherit (flake.lib) mkLuaInline;
+{flake, ...}: let
+  inherit (flake.lib) lua;
 in {
   vim.undoFile.enable = true;
-  vim.undoFile.path = mkLuaInline "vim.fn.stdpath('state') .. '/undo'";
+  vim.undoFile.path = lua "vim.fn.stdpath('state') .. '/undo'";
 }

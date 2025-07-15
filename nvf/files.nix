@@ -1,5 +1,5 @@
 {flake, ...}: let
-  inherit (flake.lib) nmap mkLuaInline mkLuaCallback;
+  inherit (flake.lib) nmap lua luaCall;
 in {
   vim = {
     utility.oil-nvim.enable = true;
@@ -12,7 +12,7 @@ in {
         show_hidden = true;
         natural_order = true;
         is_always_hidden =
-          mkLuaInline
+          lua
           # lua
           ''
             function(name, _)
@@ -23,15 +23,46 @@ in {
       win_options.wrap = true;
     };
 
-    utility.snacks-nvim.setupOpts.explorer = {
+    # utility.snacks-nvim.setupOpts.explorer = {
+    #   enabled = true;
+    #   replace_netrw = false;
+    #   finder = "explorer";
+    #   win.list.keys = {
+    #     "<Esc>" = {
+    #       "@1" = "false";
+    #       "mode" = ["n" "x"];
+    #     };
+    #   };
+    #   win.input.keys = {
+    #     "<Esc>" = {
+    #       "@1" = "false";
+    #       "mode" = ["n" "x"];
+    #     };
+    #   };
+    # };
+    utility.snacks-nvim.setupOpts.picker.sources.explorer = {
       enabled = true;
       replace_netrw = false;
       finder = "explorer";
+      layout.hidden = ["input" "preview"];
+      win.list.keys = {
+        "<Esc>" = {
+          "@1" = "false";
+          "mode" = ["n" "x"];
+        };
+      };
+      win.input.keys = {
+        "<Esc>" = {
+          "@1" = "false";
+          "mode" = ["n" "x"];
+        };
+      };
     };
 
     keymaps = [
       (nmap "-" "<cmd>Oil<cr>" "Oil")
-      (nmap "<leader>e" (mkLuaCallback "Snacks.explorer" {}) "File Explorer")
+      (nmap "<leader>e" (luaCall "Snacks.explorer" {}) "File Explorer")
+      (nmap "=" (luaCall "Snacks.explorer" {}) "File Explorer")
     ];
 
     utility.snacks-nvim.setupOpts.image = {

@@ -3,7 +3,7 @@
   flake,
   ...
 }: let
-  inherit (flake.lib) nmap mkLuaCallback mkLuaInline;
+  inherit (flake.lib) nmap lua luaCall;
 in {
   vim.utility.snacks-nvim.enable = true;
   vim.utility.snacks-nvim.setupOpts.styles.notification.wo.wrap = true;
@@ -21,11 +21,15 @@ in {
         "@1" = "flash";
         "mode" = ["i"];
       };
+      # "<Esc>" = {
+      #   "@1" = "false";
+      #   "mode" = ["n"];
+      # };
     };
 
     actions.flash =
-      mkLuaInline #lua
-      
+      lua
+      # lua
       ''
          function(picker)
            require("flash").jump({
@@ -49,23 +53,23 @@ in {
   };
 
   vim.keymaps = [
-    (nmap "<leader><space>" (mkLuaCallback "Snacks.picker.pick" {
+    (nmap "<leader><space>" (luaCall "Snacks.picker.pick" {
       source = "smart";
     }) "Smart Find Files")
 
-    (nmap "<leader>/" (mkLuaCallback "Snacks.picker.pick" {
+    (nmap "<leader>/" (luaCall "Snacks.picker.pick" {
       source = "grep";
     }) "Grep")
 
-    (nmap "<leader>;" (mkLuaCallback "Snacks.picker.pick" {
+    (nmap "<leader>;" (luaCall "Snacks.picker.pick" {
       source = "command_history";
     }) "Command History")
 
-    (nmap "<leader>n" (mkLuaCallback "Snacks.picker.pick" {
+    (nmap "<leader>n" (luaCall "Snacks.picker.pick" {
       source = "notifications";
     }) "Notification History")
 
-    (nmap "<leader>p" (mkLuaCallback "Snacks.picker" {}) "Pickers")
+    (nmap "<leader>p" (luaCall "Snacks.picker" {}) "Pickers")
   ];
 
   vim.extraPackages = with pkgs; [

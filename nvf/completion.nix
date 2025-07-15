@@ -1,5 +1,5 @@
 {flake, ...}: let
-  inherit (flake.lib) imap mkLuaInline;
+  inherit (flake.lib) imap lua;
 in {
   vim.autocomplete.blink-cmp = {
     enable = true;
@@ -30,7 +30,7 @@ in {
       completion.ghost_text.enabled = true;
       completion.menu.auto_show = false;
       cmdline.completion.menu.auto_show =
-        mkLuaInline
+        lua
         # lua
         ''
           function(ctx)

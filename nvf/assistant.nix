@@ -5,7 +5,7 @@
   flake,
   ...
 }: let
-  inherit (flake.lib) nmap vmap mkLuaInline;
+  inherit (flake.lib) nmap vmap lua;
 in {
   vim.assistant.codecompanion-nvim = {
     enable = true;
@@ -32,7 +32,7 @@ in {
       };
       strategies = {
         chat.adapter = "ollama";
-        chat.slash_commands = mkLuaInline "{ opts = { provider = 'snacks' }, }";
+        chat.slash_commands = lua "{ opts = { provider = 'snacks' }, }";
         inline.adapter = "ollama";
         cmd.adapter = "ollama";
       };
@@ -47,7 +47,7 @@ in {
           api_key = "OPENROUTER_API_KEY";
         };
       in
-        mkLuaInline
+        lua
         # lua
         ''
           {
