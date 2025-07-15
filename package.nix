@@ -4,6 +4,9 @@
   flake,
   ...
 }: let
+  inherit (flake.inputs.nvf.lib) neovimConfiguration;
+  inherit (flake.inputs.nixpkgs.lib) recursiveUpdate;
+
   basic = [
     {
       vim.viAlias = true;
@@ -55,4 +58,15 @@ in
     };
     modules = basic ++ (flake.lib.ls ./nvf) ++ local;
   }).neovim
-  {meta.license = [];}
+  {
+    meta = {
+      inherit
+        (pkgs.neovim.meta)
+        longDescription
+        license
+        teams
+        platforms
+        ;
+      homepage = "https://github.com/suderman/neovim";
+    };
+  }
