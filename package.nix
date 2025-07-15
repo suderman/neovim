@@ -9,8 +9,8 @@
 
   basic = [
     {
-      vim.viAlias = true;
-      vim.vimAlias = true;
+      # vim.viAlias = true;
+      # vim.vimAlias = true;
       vim.enableLuaLoader = true;
       vim.globals.mapleader = " "; # use space as leader key
       vim.globals.maplocalleader = ","; # use comma as local leader key
