@@ -59,9 +59,10 @@ in
     modules = basic ++ (flake.lib.ls ./nvf) ++ local;
   }).neovim
   {
+    inherit (pkgs.neovim-unwrapped) lua;
     meta = {
       inherit
-        (pkgs.neovim.meta)
+        (pkgs.neovim-unwrapped.meta)
         longDescription
         license
         teams
