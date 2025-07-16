@@ -6,6 +6,31 @@
   ...
 }: let
   inherit (flake.lib) nmap vmap lua;
+
+  luaAdapters = adapters: opts: let
+    adaptersList =
+      lib.mapAttrsToList (
+        name: value: let
+          inherit (value) extend;
+          adapter = lua ((builtins.removeAttrs value ["extend"]) // {inherit name;});
+        in
+          # lua
+          ''
+            ${name} = function()
+              return require("codecompanion.adapters").extend("${extend}", ${adapter})
+            end,
+          ''
+      )
+      adapters;
+  in
+    lua
+    # lua
+    ''
+      {
+        opts = ${lua opts},
+        ${builtins.concatStringsSep "\n" adaptersList}
+      }
+    '';
 in {
   vim.assistant.codecompanion-nvim = {
     enable = true;
@@ -16,7 +41,7 @@ in {
         show_header_separator = false; # Show header separators in the chat buffer?
         separator = "─"; # The separator between the different messages in the chat buffer
         show_references = true; # Show references (from slash commands and variables) in the chat buffer?
-        show_settings = true; # Show LLM settings at the top of the chat buffer?
+        show_settings = false; # Show LLM settings at the top of the chat buffer?
         show_token_count = true; # Show the token count for each response?
         start_in_insert_mode = false; # Open the chat buffer in insert mode?
       };
@@ -31,56 +56,50 @@ in {
         };
       };
       strategies = {
-        chat.adapter = "ollama";
+        chat.adapter = "ollama_qwen3";
         chat.slash_commands = lua "{ opts = { provider = 'snacks' }, }";
-        inline.adapter = "ollama";
-        cmd.adapter = "ollama";
+        inline.adapter = "ollama_qwen3";
+        cmd.adapter = "ollama_qwen3";
       };
-      adapters = let
-        ollama = {
-          url = "http://10.1.0.6:11434";
-          model = "qwen3:30b-a3b";
+
+      adapters =
+        luaAdapters {
+          ollama_qwen3 = {
+            extend = "ollama";
+            env.url = "http://10.1.0.6:11434";
+            headers."Content-Type" = "application/json";
+            parameters.sync = true;
+            schema = {
+              model.default = "qwen3:30b-a3b";
+              temperature.default = 0.6;
+              top_p.default = 0.95;
+              top_k.default = 20;
+              min_p.default = 0;
+            };
+          };
+          ollama_qwen3_supa_fast = {
+            extend = "ollama";
+            env.url = "http://10.1.0.6:11434";
+            headers."Content-Type" = "application/json";
+            parameters.sync = true;
+            schema = {
+              model.default = "qwen3:30b-a3b";
+              temperature.default = 0.6;
+              top_p.default = 0.95;
+              top_k.default = 20;
+              min_p.default = 0;
+            };
+          };
+          openrouter_claude = {
+            extend = "openai_compatible";
+            env.url = "https://openrouter.ai/api";
+            env.api_key = "OPENROUTER_API_KEY";
+            schema.model.default = "anthropic/claude-3.7-sonnet";
+          };
+        } {
+          show_defaults = false;
         };
-        claude = {
-          url = "https://openrouter.ai/api";
-          model = "anthropic/claude-3.7-sonnet";
-          api_key = "OPENROUTER_API_KEY";
-        };
-      in
-        lua
-        # lua
-        ''
-          {
-            ollama = function()
-              return require("codecompanion.adapters").extend("ollama", {
-                env = { url = "${ollama.url}", },
-                headers = { ["Content-Type"] = "application/json", },
-                parameters = { sync = true, },
-                schema = {
-                  model = { default = "${ollama.model}", },
-                  temperature = { default = 0.6, },
-                  top_p = { default = 0.95, },
-                  top_k = { default = 20, },
-                  min_p = { default = 0, },
-                },
-              })
-            end,
-            claude = function()
-              return require("codecompanion.adapters").extend("openai_compatible", {
-                env = {
-                  url = "${claude.url}",
-                  api_key = "${claude.api_key}",
-                },
-                schema = {
-                  model = { default = "${claude.model}", },
-                },
-              })
-            end,
-            opts = {
-              show_defaults = false,
-            },
-          }
-        '';
+
       extensions = {
         spinner = {};
         mcphub = {
@@ -167,6 +186,7 @@ in {
   vim.keymaps = [
     (nmap "<leader>ac" "<cmd>CodeCompanionChat<cr>" "CodeCompanion Chat")
     (nmap "<leader>at" "<cmd>CodeCompanionChat Toggle<cr>" "CodeCompanion Chat")
+    (nmap "\\" "<cmd>CodeCompanionChat Toggle<cr>" "CodeCompanion Chat")
     (nmap "<C-a>" "<cmd>CodeCompanionChat Toggle<cr>" "Toggle CodeCompanion Chat")
     (nmap "<leader>aa" "<cmd>CodeCompanionActions<cr>" "CodeCompanion Actions")
     (vmap "<leader>ay" "<cmd>CodeCompanionChat Add<cr>" "Yank to chat")
