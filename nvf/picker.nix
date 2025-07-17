@@ -11,6 +11,7 @@ in {
   vim.utility.snacks-nvim.setupOpts.picker = {
     enabled = true;
     layout.cycle = false;
+    focus = "list"; # list
 
     win.input.keys = {
       "s" = {
@@ -26,6 +27,15 @@ in {
       #   "mode" = ["n"];
       # };
     };
+
+    # actions.focus_list =
+    #   lua
+    #   # lua
+    #   ''
+    #     function(picker)
+    #       require("snacks.picker").resume()
+    #     end,
+    #   '';
 
     actions.flash =
       lua
@@ -55,10 +65,12 @@ in {
   vim.keymaps = [
     (nmap "<leader><space>" (luaCall "Snacks.picker.pick" {
       source = "smart";
+      focus = "input";
     }) "Smart Find Files")
 
     (nmap "<leader>/" (luaCall "Snacks.picker.pick" {
       source = "grep";
+      focus = "input";
     }) "Grep")
 
     (nmap "<leader>;" (luaCall "Snacks.picker.pick" {

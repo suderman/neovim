@@ -4,7 +4,7 @@ in {
   vim = {
     utility.oil-nvim.enable = true;
     utility.oil-nvim.setupOpts = {
-      default_file_explorer = true;
+      default_file_explorer = false;
       delete_to_trash = true;
       columns = ["icon" "permissions" "size" "mtime"];
       skip_confirm_for_simple_edits = true;
@@ -23,26 +23,9 @@ in {
       win_options.wrap = true;
     };
 
-    # utility.snacks-nvim.setupOpts.explorer = {
-    #   enabled = true;
-    #   replace_netrw = false;
-    #   finder = "explorer";
-    #   win.list.keys = {
-    #     "<Esc>" = {
-    #       "@1" = "false";
-    #       "mode" = ["n" "x"];
-    #     };
-    #   };
-    #   win.input.keys = {
-    #     "<Esc>" = {
-    #       "@1" = "false";
-    #       "mode" = ["n" "x"];
-    #     };
-    #   };
-    # };
     utility.snacks-nvim.setupOpts.picker.sources.explorer = {
       enabled = true;
-      replace_netrw = false;
+      replace_netrw = true;
       finder = "explorer";
       layout.hidden = ["input" "preview"];
       win.list.keys = {
@@ -60,9 +43,9 @@ in {
     };
 
     keymaps = [
-      (nmap "-" "<cmd>Oil<cr>" "Oil")
+      (nmap "-=" "<cmd>Oil<cr>" "Oil")
       (nmap "<leader>e" (luaCall "Snacks.explorer" {}) "File Explorer")
-      (nmap "=" (luaCall "Snacks.explorer" {}) "File Explorer")
+      (nmap "--" (luaCall "Snacks.explorer" {}) "File Explorer")
     ];
 
     utility.snacks-nvim.setupOpts.image = {
@@ -79,7 +62,7 @@ in {
       enable = true;
 
       mappings = {
-        openYazi = "<leader>-";
+        openYazi = "-y";
         openYaziDir = "<leader>cw";
         yaziToggle = "<C-y>";
       };

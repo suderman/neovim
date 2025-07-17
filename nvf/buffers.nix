@@ -20,11 +20,8 @@
   };
 in {
   vim.utility.snacks-nvim.setupOpts.picker.enabled = true;
-
   vim.keymaps = [
     (nmap "K" bufferList "Buffers")
-    (nmap ",<leader>" bufferList "Buffers")
-    (nmap ",k" bufferList "Buffers")
-    (nmap ",," "<C-^>" "Last Buffer")
+    (nmap "\\" "<C-^>" "Last Buffer")
   ];
 }

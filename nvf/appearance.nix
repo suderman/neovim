@@ -91,4 +91,9 @@ in {
         '';
     };
   };
+
+  # vim.ui.noice.enable = true;
+  # vim.ui.noice.setupOpts = {
+  #   cmdline.view = "cmdline";
+  # };
 }
