@@ -25,8 +25,8 @@ in {
       "buffer".keymaps.modes.n = ["<c-b>" "gb"];
       "file".keymaps.modes.n = ["<c-f>" "gf"];
     });
-    inline.adapter = "openrouter";
-    cmd.adapter = "openrouter";
+    inline.adapter = "copilot";
+    cmd.adapter = "copilot";
   };
 
   vim.keymaps = [

@@ -43,9 +43,11 @@ in {
     };
 
     keymaps = [
-      (nmap "-=" "<cmd>Oil<cr>" "Oil")
+      (nmap "-" "<cmd>Oil<cr>" "Oil")
       (nmap "<leader>e" (luaCall "Snacks.explorer" {}) "File Explorer")
-      (nmap "--" (luaCall "Snacks.explorer" {}) "File Explorer")
+      (nmap "H" (luaCall "Snacks.explorer" {}) "File Explorer")
+      (nmap "\\]" (luaCall "Snacks.explorer" {}) "File Explorer")
+      (nmap "\\=" (luaCall "Snacks.explorer" {}) "File Explorer")
     ];
 
     utility.snacks-nvim.setupOpts.image = {

@@ -33,7 +33,6 @@ in {
   vim.visuals.nvim-web-devicons.enable = true;
   vim.visuals.nvim-cursorline.enable = true;
   # vim.visuals.cinnamon-nvim.enable = true;
-  vim.visuals.fidget-nvim.enable = true;
   vim.visuals.highlight-undo.enable = true;
   # vim.visuals.indent-blankline.enable = true;
 
@@ -77,6 +76,13 @@ in {
     top_down = false;
   };
 
+  vim.visuals.fidget-nvim = {
+    enable = true;
+    # setupOpts.notification.window.winblend = 100;
+    setupOpts.notification.window.winblend = 0;
+    setupOpts.notification.window.border = "none";
+  };
+
   vim.extraPlugins = {
     "transparent.nvim" = {
       package = pkgs.vimPlugins.transparent-nvim;
@@ -91,6 +97,25 @@ in {
         '';
     };
   };
+
+  vim.globals.neovide_opacity = 0.8;
+
+  vim.luaConfigRC.neovide-scale =
+    # lua
+    ''
+      if vim.g.neovide then
+        vim.g.neovide_scale_factor = 1.0
+        local change_scale_factor = function(delta)
+          vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+        end
+        vim.keymap.set("n", "<D-=>", function()
+          change_scale_factor(1.25)
+        end)
+        vim.keymap.set("n", "<D-->", function()
+          change_scale_factor(1/1.25)
+        end)
+      end
+    '';
 
   # vim.ui.noice.enable = true;
   # vim.ui.noice.setupOpts = {
