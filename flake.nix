@@ -11,15 +11,6 @@
     blueprint.url = "github:numtide/blueprint";
     blueprint.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Developer environments
-    # <https://github.com/numtide/devshell>
-    devshell.url = "github:numtide/devshell";
-    devshell.inputs.nixpkgs.follows = "nixpkgs";
-
-    # My NixOS flake (and lib)
-    # <https://github.com/suderman/nixos>
-    nixos.url = "github:suderman/nixos/blueprint";
-
     # Neovim
     # <https://notashelf.github.io/nvf>
     nvf.url = "github:notashelf/nvf";

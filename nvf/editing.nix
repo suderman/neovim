@@ -1,5 +1,8 @@
-{ pkgs, lib, ... }: { 
-
+{
+  pkgs,
+  lib,
+  ...
+}: {
   vim.searchCase = "smart"; # ignore, smart, sensitive
   vim.options.virtualedit = "block,insert,onemore"; # allow positioning cursor where no character exists
   vim.options.formatoptions = "qjl1"; # don't autoformat comments
@@ -27,6 +30,5 @@
   };
 
   # navigate cursor with "s"
-  vim.utility.motion.flash-nvim.enable = true; 
-
+  vim.utility.motion.flash-nvim.enable = true;
 }

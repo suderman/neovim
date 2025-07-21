@@ -1,0 +1,6 @@
+/scratch
+/result
+/logs
+.data
+.direnv
+.env

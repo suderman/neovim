@@ -25,8 +25,17 @@ in {
       "buffer".keymaps.modes.n = ["<c-b>" "gb"];
       "file".keymaps.modes.n = ["<c-f>" "gf"];
     });
-    inline.adapter = "copilot";
-    cmd.adapter = "copilot";
+    chat.tools.opts = {
+      auto_submit_errors = true; # Send any errors to the LLM automatically?
+      auto_submit_success = true; # Send any successful output to the LLM automatically?
+      default_tools = [
+        "files" # read_file create_file insert_edit_into_file file_search grep_search get_changed_files
+        "cmd_runner" # run shell commands
+        "web_search" # search web with tavily
+      ];
+    };
+    inline.adapter = "openrouter";
+    cmd.adapter = "openrouter";
   };
 
   vim.keymaps = [

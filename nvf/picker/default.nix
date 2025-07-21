@@ -3,8 +3,13 @@
   flake,
   ...
 }: let
-  inherit (flake.lib) nmap lua luaCall;
+  inherit (flake.lib) ls nmap lua luaCall;
 
+  # win = {
+  #   list = {
+  #     ["l"] = "confirm",
+  #     ["h"] = "close",
+  #   }
   picker = source: focus: ''
     function(picker)
       picker:close()
@@ -15,6 +20,8 @@
     end
   '';
 in {
+  imports = ls ./.;
+
   vim.utility.snacks-nvim.enable = true;
   vim.utility.snacks-nvim.setupOpts.styles.notification.wo.wrap = true;
 
@@ -22,17 +29,20 @@ in {
     enabled = true;
     layout.cycle = true;
     focus = "list"; # input
-    win.input.keys = {
-      "s" = {
-        "@1" = "flash";
-        "mode" = ["n"];
-      };
-      "<c-s>" = {
-        "@1" = "flash";
-        "mode" = ["i"];
-      };
+    win.input.keys."s" = {
+      "@1" = "flash";
+      "mode" = ["n"];
     };
+    win.input.keys."<c-s>" = {
+      "@1" = "flash";
+      "mode" = ["i"];
+    };
+    win.input.keys."h" = "close";
+    win.list.keys."h" = "close";
+    win.input.keys."l" = "confirm";
+    win.list.keys."l" = "confirm";
 
+    actions.explorer = lua (picker "explorer" "list");
     actions.files = lua (picker "files" "input");
     actions.quickfix = lua (picker "qflist" "list");
     actions.buffers = lua (picker "buffers" "list");
@@ -78,6 +88,8 @@ in {
       focus = "list";
       win.list.keys."p" = "pickers";
       win.input.keys."p" = "pickers";
+      win.list.keys."e" = "explorer";
+      win.input.keys."e" = "explorer";
       win.list.keys."g" = "grep";
       win.input.keys."g" = "grep";
       win.list.keys."n" = "notifications";
