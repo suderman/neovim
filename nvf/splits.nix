@@ -60,8 +60,9 @@ in {
     (nmap "gi" ":vs<CR>" "Split vertical")
 
     # Quit split (window)
+    (nmap "<leader>q" ":q<CR>" "Quit split")
+    (nmap ",q" ":q<CR>" "Quit split")
     (nmap "<M-q>" ":q<CR>" "Quit split")
-    # (nmap "<leader>q" ":q<CR>" "Quit split")
   ];
 
   vim.options.splitbelow = true; # horizontal splits will be below

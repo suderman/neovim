@@ -64,7 +64,7 @@ in {
       enable = true;
 
       mappings = {
-        openYazi = "-y";
+        openYazi = "<leader>y";
         openYaziDir = "<leader>cw";
         yaziToggle = "<C-y>";
       };

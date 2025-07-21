@@ -48,7 +48,7 @@ in {
   vim.luaConfigRC.quickfix-add =
     # lua
     ''
-      vim.keymap.set('n', '<leader>qa', function()
+      vim.keymap.set('n', 'gq', function()
         local pos = vim.api.nvim_win_get_cursor(0)
         local file = vim.api.nvim_buf_get_name(0)
 

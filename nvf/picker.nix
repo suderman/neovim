@@ -4,15 +4,24 @@
   ...
 }: let
   inherit (flake.lib) nmap lua luaCall;
+
+  picker = source: focus: ''
+    function(picker)
+      picker:close()
+      Snacks.picker.pick {
+        source = "${source}",
+        focus = "${focus}",
+      }
+    end
+  '';
 in {
   vim.utility.snacks-nvim.enable = true;
   vim.utility.snacks-nvim.setupOpts.styles.notification.wo.wrap = true;
 
   vim.utility.snacks-nvim.setupOpts.picker = {
     enabled = true;
-    layout.cycle = false;
-    focus = "list"; # list
-
+    layout.cycle = true;
+    focus = "list"; # input
     win.input.keys = {
       "s" = {
         "@1" = "flash";
@@ -22,21 +31,22 @@ in {
         "@1" = "flash";
         "mode" = ["i"];
       };
-      # "<Esc>" = {
-      #   "@1" = "false";
-      #   "mode" = ["n"];
-      # };
     };
 
-    # actions.focus_list =
-    #   lua
-    #   # lua
-    #   ''
-    #     function(picker)
-    #       require("snacks.picker").resume()
-    #     end,
-    #   '';
-
+    actions.files = lua (picker "files" "input");
+    actions.quickfix = lua (picker "qflist" "list");
+    actions.buffers = lua (picker "buffers" "list");
+    actions.grep = lua (picker "grep" "input");
+    actions.notifications = lua (picker "notifications" "list");
+    actions.commands = lua (picker "commands" "input");
+    actions.command_history = lua (picker "command_history" "list");
+    actions.keymaps = lua (picker "keymaps" "input");
+    actions.undo = lua (picker "undo" "list");
+    actions.jumps = lua (picker "jumps" "list");
+    actions.marks = lua (picker "marks" "list");
+    actions.diagnostics = lua (picker "diagnostics" "list");
+    actions.diagnostics_buffer = lua (picker "diagnostics_buffer" "list");
+    actions.pickers = lua "function() Snacks.picker {} end ";
     actions.flash =
       lua
       # lua
@@ -63,25 +73,38 @@ in {
   };
 
   vim.keymaps = [
-    (nmap "<leader><space>" (luaCall "Snacks.picker.pick" {
+    (nmap "<space>" (luaCall "Snacks.picker.pick" {
       source = "smart";
-      focus = "input";
+      focus = "list";
+      win.list.keys."p" = "pickers";
+      win.input.keys."p" = "pickers";
+      win.list.keys."g" = "grep";
+      win.input.keys."g" = "grep";
+      win.list.keys."n" = "notifications";
+      win.input.keys."n" = "notifications";
+      win.list.keys.":" = "commands";
+      win.input.keys.":" = "commands";
+      win.list.keys.";" = "command_history";
+      win.input.keys.";" = "command_history";
+      win.list.keys."f" = "files";
+      win.input.keys."f" = "files";
+      win.list.keys."F" = "quickfix";
+      win.input.keys."F" = "quickfix";
+      win.list.keys."b" = "buffers";
+      win.input.keys."b" = "buffers";
+      win.list.keys."K" = "keymaps";
+      win.input.keys."K" = "keymaps";
+      win.list.keys."J" = "jumps";
+      win.input.keys."J" = "jumps";
+      win.list.keys."u" = "undo";
+      win.input.keys."u" = "undo";
+      win.list.keys."m" = "marks";
+      win.input.keys."m" = "marks";
+      win.list.keys."d" = "diagnostics_buffer";
+      win.input.keys."d" = "diagnostics_buffer";
+      win.list.keys."D" = "diagnostics";
+      win.input.keys."D" = "diagnostics";
     }) "Smart Find Files")
-
-    (nmap "<leader>/" (luaCall "Snacks.picker.pick" {
-      source = "grep";
-      focus = "input";
-    }) "Grep")
-
-    (nmap "<leader>;" (luaCall "Snacks.picker.pick" {
-      source = "command_history";
-    }) "Command History")
-
-    (nmap "<leader>n" (luaCall "Snacks.picker.pick" {
-      source = "notifications";
-    }) "Notification History")
-
-    (nmap "<leader>p" (luaCall "Snacks.picker" {}) "Pickers")
   ];
 
   vim.extraPackages = with pkgs; [
