@@ -45,4 +45,10 @@ in {
     (vmap ",y" "<cmd>CodeCompanionChat Add<cr>" "Yank to chat")
     (vmap ",i" "<cmd>CodeCompanion /buffer " "CodeCompanion Inline")
   ];
+
+  vim.lazy.plugins.codecompanion-nvim.cmd = [
+    "CodeCompanionActions"
+    "CodeCompanionChat"
+    "CodeCompanion"
+  ];
 }
