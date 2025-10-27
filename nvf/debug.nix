@@ -8,6 +8,7 @@ in {
   vim.lsp = {
     enable = true;
     formatOnSave = true;
+    lspconfig.enable = false;
     # lspkind.enable = true;
     lightbulb.enable = true;
     lightbulb.setupOpts.sign.text = "💡";

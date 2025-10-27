@@ -232,15 +232,16 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1761112426,
-        "narHash": "sha256-fa3fIyXP3xQhsPaZX4WsFwPM9g64EMOucfDEC4o8Nwc=",
+        "lastModified": 1761514959,
+        "narHash": "sha256-7xcjhq6lKupZGph2qAmHfBjTB9nKJs32+n/3iAkl36I=",
         "owner": "notashelf",
         "repo": "nvf",
-        "rev": "9b3e7bcf68ace2f07eb7478c40e45ce79332482b",
+        "rev": "96ba7b64862ec27becbd6846a9d5c05de1697f8e",
         "type": "github"
       },
       "original": {
         "owner": "notashelf",
+        "ref": "v0.8",
         "repo": "nvf",
         "type": "github"
       }

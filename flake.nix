@@ -13,7 +13,7 @@
 
     # Neovim
     # <https://notashelf.github.io/nvf>
-    nvf.url = "github:notashelf/nvf";
+    nvf.url = "github:notashelf/nvf/v0.8";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
 
     # <https://github.com/olimorris/codecompanion.nvim>

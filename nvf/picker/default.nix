@@ -85,7 +85,7 @@ in {
   vim.keymaps = [
     (nmap "<space>" (luaCall "Snacks.picker.pick" {
       source = "smart";
-      focus = "list";
+      focus = "input"; # list
       win.list.keys."p" = "pickers";
       win.input.keys."p" = "pickers";
       win.list.keys."e" = "explorer";

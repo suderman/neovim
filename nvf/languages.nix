@@ -44,11 +44,11 @@ in {
     go.enable = true;
     lua.enable = true;
     zig.enable = false;
-    python.enable = true;
     typst.enable = false;
+
     rust = {
       enable = true;
-      crates.enable = true;
+      extensions.crates-nvim.enable = true;
     };
 
     assembly.enable = false;
@@ -76,13 +76,13 @@ in {
       treesitter.enable = true;
     };
 
-    # python = {
-    #   enable = true;
-    #   lsp.enable = true;
-    #   format.enable = true;
-    #   format.type = "ruff";
-    #   treesitter.enable = true;
-    # };
+    python = {
+      enable = true;
+      lsp.enable = true;
+      format.enable = true;
+      format.type = "ruff";
+      treesitter.enable = true;
+    };
   };
 
   vim.extraPackages = with pkgs; [
