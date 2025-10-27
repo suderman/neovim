@@ -48,7 +48,7 @@ in {
 
     rust = {
       enable = true;
-      extensions.crates-nvim.enable = true;
+      # extensions.crates-nvim.enable = true;
     };
 
     assembly.enable = false;
