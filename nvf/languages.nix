@@ -15,7 +15,7 @@ in {
     nix = {
       enable = true;
       format.enable = true;
-      format.type = "alejandra"; # nixfmt
+      format.type = ["alejandra"]; # nixfmt
     };
 
     markdown = {
@@ -29,18 +29,12 @@ in {
 
     bash.enable = true;
     clang.enable = true;
-    css = {
-      enable = true;
-      format.package = prettier;
-    };
+    css.enable = true;
     html.enable = true;
     sql.enable = true;
     java.enable = false;
     kotlin.enable = false;
-    ts = {
-      enable = true;
-      format.package = prettier;
-    };
+    ts.enable = true;
     go.enable = true;
     lua.enable = true;
     zig.enable = false;
@@ -80,7 +74,7 @@ in {
       enable = true;
       lsp.enable = true;
       format.enable = true;
-      format.type = "ruff";
+      format.type = ["ruff"];
       treesitter.enable = true;
     };
   };
