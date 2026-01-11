@@ -40,11 +40,11 @@
     "codecompanion-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1767374656,
-        "narHash": "sha256-L4G1vZJKsLzQpJkbUod3Zrrp4lndplQIVfF4YukmYjE=",
+        "lastModified": 1768087958,
+        "narHash": "sha256-DHU/eaZmNQ+rr05+OiZR6s5aEHXjyEd6SJzUYybnVr4=",
         "owner": "olimorris",
         "repo": "codecompanion.nvim",
-        "rev": "b6fcc25ced5628d3d960e6e4bc287ce8fc9a1710",
+        "rev": "181e93c3f6a65ead4106f1b5a71194103accb3d3",
         "type": "github"
       },
       "original": {
@@ -225,11 +225,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1767379071,
-        "narHash": "sha256-EgE0pxsrW9jp9YFMkHL9JMXxcqi/OoumPJYwf+Okucw=",
+        "lastModified": 1767892417,
+        "narHash": "sha256-dhhvQY67aboBk8b0/u0XB6vwHdgbROZT3fJAjyNh5Ww=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "fb7944c166a3b630f177938e478f0378e64ce108",
+        "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
         "type": "github"
       },
       "original": {
