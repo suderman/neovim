@@ -4,7 +4,10 @@
   inputs = {
     # Nix Packages
     # <https://search.nixos.org/packages>
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    # Switched to stable until this is resovled
+    # https://github.com/NotAShelf/nvf/issues/1312
 
     # Map folder structure to flake outputs
     # <https://github.com/numtide/blueprint>
