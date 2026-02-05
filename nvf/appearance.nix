@@ -100,6 +100,41 @@ in {
 
   vim.globals.neovide_opacity = 0.8;
 
+  vim.luaConfigRC.remote-tuning =
+    # lua
+    ''
+      -- Remote (SSH) tuning
+      -- Rationale: TUI redraws, transparency, animations, and inline images can feel
+      -- extremely slow over SSH even on decent RTT due to many sequential frames.
+      local is_ssh = (vim.env.SSH_CONNECTION ~= nil) or (vim.env.SSH_TTY ~= nil)
+
+      if is_ssh then
+        -- Reduce terminal blending (extra redraw cost on many terminals)
+        pcall(function()
+          vim.opt.winblend = 0
+          vim.opt.pumblend = 0
+        end)
+
+        -- Disable/short-circuit Snacks UI features that emit lots of redraw work
+        pcall(function()
+          local snacks = require("snacks")
+          snacks.setup({
+            image = {
+              enabled = false,
+              inline = false,
+              force = false,
+            },
+            scroll = {
+              animate = { duration = { step = 0, total = 0 } },
+            },
+            dim = {
+              animate = { duration = { step = 0, total = 0 } },
+            },
+          })
+        end)
+      end
+    '';
+
   vim.luaConfigRC.neovide-scale =
     # lua
     ''
