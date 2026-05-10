@@ -10,18 +10,83 @@ vim.g.did_load_picker_plugin = true
 -- Check if snacks is available
 local ok_snacks, Snacks = pcall(require, 'snacks')
 
--- Try to setup snacks picker if available
+-- Full snacks setup migrated from old generated init (lines 1351+)
 if ok_snacks then
+  local function picker_action(source, focus)
+    return function(picker)
+      picker:close()
+      Snacks.picker.pick({
+        source = source,
+        focus = focus,
+      })
+    end
+  end
+
   Snacks.setup({
-    picker = {
+    bigfile = { enabled = true },
+    dim = {
+      animate = { duration = { step = 10, total = 200 } },
       enabled = true,
-      focus = "input",
-      layout = { preset = "dropdown", preview = false },
+    },
+    image = {
+      enabled = true,
+      force = true,
+      inline = true,
+    },
+    indent = {
+      animate = { duration = { step = 10, total = 200 } },
+      enabled = true,
+      scope = { enabled = true, hl = "LineNr", underline = true },
+    },
+    input = { enabled = true },
+    notifier = {
+      enabled = true,
+      level = "INFO",
+      style = "minimal",
+      top_down = false,
+    },
+    picker = {
+      actions = {
+        buffers = picker_action('buffers', 'list'),
+        command_history = picker_action('command_history', 'list'),
+        commands = picker_action('commands', 'input'),
+        diagnostics = picker_action('diagnostics', 'list'),
+        diagnostics_buffer = picker_action('diagnostics_buffer', 'list'),
+        explorer = picker_action('explorer', 'list'),
+        files = picker_action('files', 'input'),
+        grep = picker_action('grep', 'input'),
+        jumps = picker_action('jumps', 'list'),
+        keymaps = picker_action('keymaps', 'input'),
+        marks = picker_action('marks', 'list'),
+        notifications = picker_action('notifications', 'list'),
+        pickers = function()
+          Snacks.picker({})
+        end,
+        quickfix = picker_action('qflist', 'list'),
+        undo = picker_action('undo', 'list'),
+      },
+      enabled = true,
+      focus = "list",
+      layout = { cycle = true },
+      sources = {
+        explorer = {
+          enabled = true,
+          finder = "explorer",
+          layout = { hidden = { "input", "preview" } },
+          replace_netrw = true,
+          win = {
+            input = { keys = { ["<Esc>"] = { "false", mode = { "n", "x" } } } },
+            list = { keys = { ["<Esc>"] = { "false", mode = { "n", "x" } } } },
+          },
+        },
+      },
       win = {
         input = {
           keys = {
+            ["<c-s>"] = { "flash", mode = { "i" } },
             h = "close",
             l = "confirm",
+            s = { "flash", mode = { "n" } },
           },
         },
         list = {
@@ -32,11 +97,16 @@ if ok_snacks then
         },
       },
     },
-    explorer = {
+    scope = { enabled = true },
+    scroll = {
+      animate = { duration = { step = 10, total = 200 } },
       enabled = true,
-      replace_netrw = true,
-      finder = "explorer",
-      layout = { preset = "dropdown", hidden = { "input", "preview" } },
+    },
+    styles = {
+      -- Old nvf config used a blink-cmp-specific escape action here.
+      -- Keep plain <esc> behavior with nvim-cmp.
+      input = { keys = { i_esc = { "<esc>" } } },
+      notification = { wo = { wrap = true } },
     },
   })
 end
@@ -102,15 +172,68 @@ if ok_snacks then
     Snacks.picker.pick({
       source = "smart",
       focus = "input",
+      win = {
+        input = {
+          keys = {
+            [":"] = "commands",
+            [";"] = "command_history",
+            D = "diagnostics",
+            F = "quickfix",
+            J = "jumps",
+            K = "keymaps",
+            b = "buffers",
+            d = "diagnostics_buffer",
+            e = "explorer",
+            f = "files",
+            g = "grep",
+            m = "marks",
+            n = "notifications",
+            p = "pickers",
+            u = "undo",
+          },
+        },
+        list = {
+          keys = {
+            [":"] = "commands",
+            [";"] = "command_history",
+            D = "diagnostics",
+            F = "quickfix",
+            J = "jumps",
+            K = "keymaps",
+            b = "buffers",
+            d = "diagnostics_buffer",
+            e = "explorer",
+            f = "files",
+            g = "grep",
+            m = "marks",
+            n = "notifications",
+            p = "pickers",
+            u = "undo",
+          },
+        },
+      },
     })
   end, { desc = 'Smart Find Files' })
 
-  -- K - Buffers
+  -- K - Buffers (migrated from old generated init)
   vim.keymap.set('n', 'K', function()
     Snacks.picker.pick({
-      source = "buffers",
-      focus = "list",
       auto_close = true,
+      focus = "list",
+      jump = { close = false },
+      layout = { preset = "dropdown", preview = false },
+      source = "buffers",
+      win = {
+        list = {
+          keys = {
+            ["<Space>"] = "close",
+            K = "close",
+            dd = "bufdelete",
+            h = "close",
+            l = "confirm",
+          },
+        },
+      },
     })
   end, { desc = 'Buffers' })
 
@@ -123,6 +246,14 @@ if ok_snacks then
     Snacks.explorer()
   end, { desc = 'File Explorer' })
 
+  vim.keymap.set('n', '\\]', function()
+    Snacks.explorer()
+  end, { desc = 'File Explorer' })
+
+  vim.keymap.set('n', '\\=', function()
+    Snacks.explorer()
+  end, { desc = 'File Explorer' })
+
   -- Files (via telescope fallback if snacks can't)
   vim.keymap.set('n', '<leader>tp', function()
     Snacks.picker.pick({ source = "files", focus = "input" })
@@ -132,51 +263,6 @@ if ok_snacks then
   vim.keymap.set('n', '<C-g>', function()
     Snacks.picker.pick({ source = "grep", focus = "input" })
   end, { desc = '[Snacks] live grep' })
-
-  -- Quickfix
-  vim.keymap.set('n', '<leader>F', function()
-    Snacks.picker.pick({ source = "qflist", focus = "list" })
-  end, { desc = '[Snacks] quickfix' })
-
-  -- Undo
-  vim.keymap.set('n', 'u', function()
-    Snacks.picker.pick({ source = "undo", focus = "list" })
-  end, { desc = '[Snacks] undo' })
-
-  -- Marks
-  vim.keymap.set('n', 'm', function()
-    Snacks.picker.pick({ source = "marks", focus = "list" })
-  end, { desc = '[Snacks] marks' })
-
-  -- Jumps
-  vim.keymap.set('n', 'J', function()
-    Snacks.picker.pick({ source = "jumps", focus = "list" })
-  end, { desc = '[Snacks] jumps' })
-
-  -- Diagnostics (buffer)
-  vim.keymap.set('n', 'd', function()
-    Snacks.picker.pick({ source = "diagnostics_buffer", focus = "list" })
-  end, { desc = '[Snacks] buffer diagnostics' })
-
-  -- Diagnostics (all)
-  vim.keymap.set('n', 'D', function()
-    Snacks.picker.pick({ source = "diagnostics", focus = "list" })
-  end, { desc = '[Snacks] all diagnostics' })
-
-  -- Notifications
-  vim.keymap.set('n', 'n', function()
-    Snacks.picker.pick({ source = "notifications", focus = "list" })
-  end, { desc = '[Snacks] notifications' })
-
-  -- Commands
-  vim.keymap.set('n', ':', function()
-    Snacks.picker.pick({ source = "commands", focus = "input" })
-  end, { desc = '[Snacks] commands' })
-
-  -- Command history
-  vim.keymap.set('n', ';', function()
-    Snacks.picker.pick({ source = "command_history", focus = "list" })
-  end, { desc = '[Snacks] command history' })
 
 else
   -- Fallback to telescope if snacks not available
@@ -250,3 +336,4 @@ vim.keymap.set('n', '-', '<cmd>Oil<cr>', { desc = 'Oil file explorer' })
 -- === Yazi-nvim (from nvf/picker/files.nix) ===
 vim.keymap.set('n', '<leader>y', '<cmd>Yazi<cr>', { desc = 'Yazi file picker' })
 vim.keymap.set('n', '<leader>cw', '<cmd>Yazi cwd<cr>', { desc = 'Yazi at cwd' })
+vim.keymap.set('n', '<C-y>', '<cmd>Yazi toggle<cr>', { desc = 'Resume last Yazi session' })
