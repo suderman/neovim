@@ -15,9 +15,6 @@ opt.showmatch = true
 opt.incsearch = true
 opt.hlsearch = true
 
-opt.spell = true
-opt.spelllang = 'en'
-
 opt.expandtab = true
 opt.tabstop = 2
 opt.softtabstop = 2
