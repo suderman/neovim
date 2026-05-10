@@ -1,53 +1,75 @@
 {
-  description = "my nvf neovim flake";
+  description = "suderman's neovim flake";
 
   inputs = {
-    # Nix Packages
-    # <https://search.nixos.org/packages>
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    # Switched to stable until this is resovled
+    # Using stable branch; nixos-25.11 has nvf compatibility issues:
     # https://github.com/NotAShelf/nvf/issues/1312
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    flake-utils.url = "github:numtide/flake-utils";
+    gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
 
-    # Map folder structure to flake outputs
-    # <https://github.com/numtide/blueprint>
-    blueprint.url = "github:numtide/blueprint";
-    blueprint.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Neovim
-    # <https://notashelf.github.io/nvf>
-    nvf.url = "github:notashelf/nvf/v0.8";
-    nvf.inputs.nixpkgs.follows = "nixpkgs";
-
-    # <https://github.com/olimorris/codecompanion.nvim>
+    # Neovim plugins from git
     codecompanion-nvim.url = "github:olimorris/codecompanion.nvim";
     codecompanion-nvim.flake = false;
 
-    # <https://github.com/franco-ruggeri/codecompanion-spinner.nvim>
     codecompanion-spinner-nvim.url = "github:franco-ruggeri/codecompanion-spinner.nvim";
     codecompanion-spinner-nvim.flake = false;
 
-    # <https://github.com/franco-ruggeri/codecompanion-lualine.nvim>
     codecompanion-lualine-nvim.url = "github:franco-ruggeri/codecompanion-lualine.nvim";
     codecompanion-lualine-nvim.flake = false;
 
-    # <https://ravitemer.github.io/mcphub.nvim>
     mcphub-nvim.url = "github:ravitemer/mcphub.nvim";
     mcphub-nvim.inputs.nixpkgs.follows = "nixpkgs";
 
-    # <https://github.com/ravitemer/mcp-hub>
     mcp-hub.url = "github:ravitemer/mcp-hub";
     mcp-hub.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs: {
-    inherit
-      (inputs.blueprint {inherit inputs;})
-      devShells
-      packages
-      formatter
-      checks
-      lib
-      ;
-  };
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    flake-utils,
+    ...
+  }: let
+    systems = builtins.attrNames nixpkgs.legacyPackages;
+
+    neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
+  in
+    flake-utils.lib.eachSystem systems (system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [
+          neovim-overlay
+          inputs.gen-luarc.overlays.default
+        ];
+        config = {
+          allowUnfree = true;
+        };
+      };
+      shell = pkgs.mkShell {
+        name = "nvim-devShell";
+        buildInputs = with pkgs; [
+          lua-language-server
+          nil
+          stylua
+          luajitPackages.luacheck
+          nvim-dev
+        ];
+        shellHook = ''
+          ln -fs ${pkgs.nvim-luarc-json} .luarc.json
+          ln -Tfns $PWD/nvim ~/.config/nvim-dev
+        '';
+      };
+    in {
+      packages = rec {
+        default = nvim;
+        nvim = pkgs.nvim-pkg;
+      };
+      devShells = {
+        default = shell;
+      };
+    })
+    // {
+      overlays.default = neovim-overlay;
+    };
 }
