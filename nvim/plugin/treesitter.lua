@@ -81,3 +81,21 @@ require('ts_context_commentstring').setup()
 
 -- Tree-sitter based folding
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+
+-- nvim-treesitter incremental selection config
+require('nvim-treesitter.configs').setup({
+  auto_install = false,
+  sync_install = false,
+  ensure_installed = {},
+  indent = { enable = true },
+  highlight = { enable = true, additional_vim_regex_highlighting = false },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = 'gnn',
+      node_incremental = 'grn',
+      scope_incremental = 'grc',
+      node_decremental = 'grm',
+    },
+  },
+})
