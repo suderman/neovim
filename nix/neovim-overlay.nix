@@ -46,6 +46,8 @@ with final.pkgs.lib; let
     nvim-treesitter-context
     transparent-nvim
     fidget-nvim
+    onedark-nvim
+    render-markdown-nvim
 
     # Git integration
     gitsigns-nvim
