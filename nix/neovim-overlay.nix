@@ -54,6 +54,7 @@ with final.pkgs.lib; let
     diffview-nvim
     neogit
     vim-fugitive
+    git-conflict-nvim
 
     # Picker/explorer
     telescope-nvim
@@ -83,6 +84,7 @@ with final.pkgs.lib; let
 
     # LSP helpers
     trouble-nvim
+    nvim-lint
   ]
   ++ [
     # External flake-input plugins built via mkNvimPlugin
@@ -131,6 +133,28 @@ with final.pkgs.lib; let
     ruff
     sqlfluff
     gcc
+
+    # LSP servers
+    basedpyright
+    bash-language-server
+    clang-tools
+    gopls
+    marksman
+    phpactor
+    rubyPackages.solargraph
+    sqls
+    superhtml
+    tailwindcss-language-server
+    typescript-language-server
+    vscode-langservers-extracted
+    deadnix
+    statix
+    shellcheck
+    rubocop
+    eslint_d
+    htmlhint
+    markdownlint-cli2
+    rust-analyzer
   ];
 in {
   nvim-pkg = mkNeovim {
