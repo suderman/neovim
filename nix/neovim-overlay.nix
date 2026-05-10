@@ -42,12 +42,17 @@ with final.pkgs.lib; let
     # UI and visuals
     lualine-nvim
     nvim-navic
-    statuscol-nvim
+    nvim-cursorline
     nvim-treesitter-context
     transparent-nvim
     fidget-nvim
     onedark-nvim
     render-markdown-nvim
+    nvim-lightbulb
+    nvim-scrollbar
+    smartcolumn-nvim
+    highlight-undo-nvim
+    nvim-web-devicons
 
     # Git integration
     gitsigns-nvim
@@ -61,19 +66,20 @@ with final.pkgs.lib; let
     telescope-fzy-native-nvim
     oil-nvim
     plenary-nvim
-    nvim-web-devicons
     vim-tmux-navigator
     yazi-nvim
 
+    # Quickfix
+    quicker-nvim
+
     # Editing enhancements
+    mini-nvim
     nvim-surround
+    comment-nvim
     vim-unimpaired
     eyeliner-nvim
     vim-repeat
     flash-nvim
-
-    # Quickfix
-    quicker-nvim
 
     # Utility
     nvim-unception
@@ -85,6 +91,7 @@ with final.pkgs.lib; let
     # LSP helpers
     trouble-nvim
     nvim-lint
+    (mkNvimPlugin inputs.nvim-docs-view "nvim-docs-view")
   ]
   ++ [
     # External flake-input plugins built via mkNvimPlugin
