@@ -21,6 +21,9 @@
     mcphub-nvim.url = "github:ravitemer/mcphub.nvim";
     mcphub-nvim.inputs.nixpkgs.follows = "nixpkgs";
 
+    nvim-docs-view.url = "github:amrbashir/nvim-docs-view";
+    nvim-docs-view.flake = false;
+
     mcp-hub.url = "github:ravitemer/mcp-hub";
     mcp-hub.inputs.nixpkgs.follows = "nixpkgs";
   };

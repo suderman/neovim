@@ -327,6 +327,22 @@
         "type": "github"
       }
     },
+    "nvim-docs-view": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778203695,
+        "narHash": "sha256-zsrrsTIpjRqDS/NXQH7TA6CjZj3PK8kstD9EB4omSGw=",
+        "owner": "amrbashir",
+        "repo": "nvim-docs-view",
+        "rev": "9a262fa7e181e924d355e8725c68c48f076138b1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "amrbashir",
+        "repo": "nvim-docs-view",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "codecompanion-lualine-nvim": "codecompanion-lualine-nvim",
@@ -336,7 +352,8 @@
         "gen-luarc": "gen-luarc",
         "mcp-hub": "mcp-hub",
         "mcphub-nvim": "mcphub-nvim",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "nvim-docs-view": "nvim-docs-view"
       }
     },
     "systems": {
