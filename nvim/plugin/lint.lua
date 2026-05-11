@@ -25,14 +25,12 @@ lint.linters_by_ft = {
   typescriptreact = { 'eslint_d' },
 }
 
--- Configure linter-specific settings where needed
-lint.linters.deadnix = {
-  cmd = 'deadnix',
-}
-
-lint.linters.eslint_d = {
-  cmd = 'eslint_d',
-  required_files = {
+-- Configure linter-specific settings where needed.
+-- Do not replace built-in linter definitions with partial tables, or we lose
+-- parser/args/stdin settings and nvim-lint crashes when the linter runs.
+local eslint_d = lint.linters.eslint_d
+if eslint_d then
+  eslint_d.required_files = {
     'eslint.config.js',
     'eslint.config.mjs',
     '.eslintrc',
@@ -40,78 +38,53 @@ lint.linters.eslint_d = {
     '.eslintrc.json',
     '.eslintrc.js',
     '.eslintrc.yml',
-  },
-}
+  }
+end
 
-lint.linters.htmlhint = {
-  cmd = 'htmlhint',
-}
+local function should_run_linter(name)
+  local linter = lint.linters[name]
+  if not linter then
+    return false
+  end
 
-lint.linters.luacheck = {
-  cmd = 'luacheck',
-}
+  if type(linter) == 'function' then
+    linter = linter()
+  end
 
-lint.linters.markdownlint_cli2 = {
-  cmd = 'markdownlint-cli2',
-}
+  local required_files = linter.required_files
+  if required_files == nil or vim.tbl_isempty(required_files) then
+    return true
+  end
 
-lint.linters.rubocop = {
-  cmd = 'rubocop',
-}
+  local cwd = linter.cwd or vim.fn.getcwd()
+  for _, file in ipairs(required_files) do
+    local path = vim.fs.joinpath(cwd, file)
+    if vim.uv.fs_stat(path) then
+      return true
+    end
+  end
 
-lint.linters.shellcheck = {
-  cmd = 'shellcheck',
-}
+  return false
+end
 
-lint.linters.sqlfluff = {
-  cmd = 'sqlfluff',
-  args = { 'lint', '--format=json', '--dialect=ansi' },
-}
-
-lint.linters.statix = {
-  cmd = 'statix',
-}
-
--- Old-style lint-on-save function (mirrors nvf behavior)
-local function nvf_lint(buf)
+local function lint_buffer(buf)
   local ft = vim.api.nvim_get_option_value('filetype', { buf = buf })
-  local linters_by_ft = require('lint').linters_by_ft[ft]
-  if linters_by_ft == nil then
+  local names = lint._resolve_linter_by_ft(ft)
+  if vim.tbl_isempty(names) then
     return
   end
 
-  for _, name in ipairs(linters_by_ft) do
-    local linter = require('lint').linters[name]
-    if not linter then
-      goto continue
-    end
-
-    if type(linter) == 'function' then
-      linter = linter()
-    end
-    linter.name = linter.name or name
-
-    local required_files = linter.required_files
-    if required_files == nil or next(required_files) == nil then
-      require('lint').lint(linter)
-    else
-      local cwd = linter.cwd or vim.fn.getcwd()
-      for _, fn in ipairs(required_files) do
-        local path = vim.fs.joinpath(cwd, fn)
-        if vim.uv.fs_stat(path) then
-          require('lint').lint(linter)
-          break
-        end
-      end
-    end
-
-    ::continue::
+  local eligible = vim.tbl_filter(should_run_linter, names)
+  if vim.tbl_isempty(eligible) then
+    return
   end
+
+  lint.try_lint(eligible)
 end
 
 -- Attach lint-on-save for filetypes that have linters configured
 vim.api.nvim_create_autocmd('BufWritePost', {
   callback = function(args)
-    nvf_lint(args.buf)
+    lint_buffer(args.buf)
   end,
 })
