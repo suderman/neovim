@@ -31,6 +31,7 @@ opt.splitkeep = "screen"
 -- Editing
 opt.ignorecase = true
 opt.smartcase = true
+opt.clipboard = "unnamedplus"
 opt.virtualedit = "block,insert,onemore"
 opt.formatoptions = "qjl1"
 opt.listchars = "tab:> ,extends:…,precedes:…,nbsp:␣"
