@@ -21,11 +21,9 @@
     flake-utils,
     ...
   }: let
-    systems = builtins.attrNames nixpkgs.legacyPackages;
-
     neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
   in
-    flake-utils.lib.eachSystem systems (system: let
+    flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
