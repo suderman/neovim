@@ -12,4 +12,13 @@
 - Picker is Snacks. Do not re-add Telescope.
 - Conform owns `format_on_save`. Do not add a second `BufWritePre` formatter.
 - OpenCode plugin should prefer `~/.local/bin/opencode`; Nix package may lag user config.
-- `ui.lua` is still large. Split only as a separate slice, and verify new files are tracked.
+- Entrypoints in `nvim/plugin/` should stay thin. Real code lives under `nvim/lua/suderman/`.
+- Recent cleanup split UI, LSP, picker, and git config. Keep this pattern.
+
+## Remaining cleanup plan
+
+1. Treesitter slice: keep native `vim.treesitter.start`/fold setup clear; split textobject maps only if it improves readability.
+2. Completion/formatting/lint polish: no big rewrites; just comments, grouping, and obvious drift.
+3. Optional OpenCode polish: split setup/keymaps only if file feels noisy.
+4. Nix overlay readability pass: group plugin/tool lists; avoid churn.
+5. Final audit: stale-name grep, `nix build .`, headless load, health, keymap smoke checks.
