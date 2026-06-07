@@ -25,7 +25,7 @@ with final.pkgs.lib; let
 
     # Completion
     blink-cmp
-    luasnip
+    friendly-snippets
 
     # LSP and diagnostics
     nvim-lspconfig
@@ -33,7 +33,6 @@ with final.pkgs.lib; let
     # UI and visuals
     lualine-nvim
     nvim-navic
-    nvim-cursorline
     nvim-treesitter-context
     transparent-nvim
     fidget-nvim
@@ -63,15 +62,10 @@ with final.pkgs.lib; let
 
     # Editing enhancements
     mini-nvim
-    nvim-surround
-    comment-nvim
     vim-unimpaired
-    eyeliner-nvim
-    vim-repeat
     flash-nvim
 
     # Utility
-    nvim-unception
     sqlite-lua
     which-key-nvim
     snacks-nvim
@@ -85,18 +79,6 @@ with final.pkgs.lib; let
   ++ [
     # External flake-input plugins built via mkNvimPlugin
     (mkNvimPlugin inputs.opencode-nvim "opencode-nvim")
-    # Goose.nvim (custom plugin from nvf/goose.nix)
-    (pkgs.vimUtils.buildVimPlugin rec {
-      pname = "goose.nvim";
-      version = "5a72d3b3f7a2a01d174100c8c294da8cd3a2aeeb";
-      doCheck = false;
-      src = pkgs.fetchFromGitHub {
-        owner = "azorng";
-        repo = pname;
-        rev = version;
-        sha256 = "sha256-jVWggPmdINFNVHJSCpbTZq8wKwGjldu6PNSkb7naiQE=";
-      };
-    })
   ];
 
   # Runtime dependencies for tools used by plugins
@@ -120,12 +102,23 @@ with final.pkgs.lib; let
     tectonic
     mermaid-cli
     yazi
+    tree-sitter
 
     # Formatters/linters
     alejandra
     ruff
+    stylua
+    prettier
+    prettierd
+    gotools
+    shfmt
     sqlfluff
+    djlint
     gcc
+    luaPackages.luacheck
+    php83Packages.php-cs-fixer
+    php83Packages.php-codesniffer
+    phpstan
 
     # LSP servers
     basedpyright
@@ -140,6 +133,7 @@ with final.pkgs.lib; let
     tailwindcss-language-server
     typescript-language-server
     vscode-langservers-extracted
+    yaml-language-server
     deadnix
     statix
     shellcheck
