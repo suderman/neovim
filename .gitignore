@@ -4,3 +4,4 @@
 .data
 .direnv
 .env
+.luarc.json
