@@ -2,9 +2,7 @@
   description = "suderman's neovim flake";
 
   inputs = {
-    # Using stable branch; nixos-25.11 has nvf compatibility issues:
-    # https://github.com/NotAShelf/nvf/issues/1312
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
 
