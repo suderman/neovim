@@ -65,6 +65,7 @@ with final.pkgs.lib; let
 
     # Utility
     sqlite-lua
+    which-key-nvim
     snacks-nvim
     conform-nvim
 
