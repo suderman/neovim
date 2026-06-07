@@ -32,7 +32,6 @@ with final.pkgs.lib; let
 
     # UI and visuals
     lualine-nvim
-    nvim-navic
     nvim-treesitter-context
     transparent-nvim
     fidget-nvim
@@ -66,7 +65,6 @@ with final.pkgs.lib; let
 
     # Utility
     sqlite-lua
-    which-key-nvim
     snacks-nvim
     conform-nvim
 
@@ -128,7 +126,6 @@ with final.pkgs.lib; let
     phpactor
     rubyPackages.solargraph
     sqls
-    superhtml
     tailwindcss-language-server
     typescript-language-server
     vscode-langservers-extracted
