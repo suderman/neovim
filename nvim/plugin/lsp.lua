@@ -6,7 +6,7 @@ if vim.g.did_load_lsp_plugin then
 end
 vim.g.did_load_lsp_plugin = true
 
--- Global diagnostics configuration (vim.diagnostic.config already in init.lua)
+-- Global diagnostics configuration lives in suderman.diagnostics.
 
 -- Treesitter context keymap
 vim.keymap.set("n", "gC", ":TSContext toggle<CR>", { desc = "Toggle treesitter context" })
