@@ -13,26 +13,30 @@ with final.pkgs.lib; let
   pkgs-locked = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 
   mkNeovim = pkgs.callPackage ./mkNeovim.nix {
-      inherit (pkgs-locked) wrapNeovimUnstable neovimUtils;
-    };
+    inherit (pkgs-locked) wrapNeovimUnstable neovimUtils;
+  };
 
-  # All plugins - from nixpkgs and external flake inputs
-  all-plugins = with pkgs.vimPlugins; [
-    # Treesitter and related
+  treesitterPlugins = with pkgs.vimPlugins; [
     nvim-treesitter.withAllGrammars
     nvim-treesitter-textobjects
     nvim-ts-context-commentstring
+    nvim-treesitter-context
+  ];
 
-    # Completion
+  completionPlugins = with pkgs.vimPlugins; [
     blink-cmp
     friendly-snippets
+  ];
 
-    # LSP and diagnostics
+  lspPlugins = with pkgs.vimPlugins; [
     nvim-lspconfig
+    trouble-nvim
+    nvim-lint
+    (mkNvimPlugin inputs.nvim-docs-view "nvim-docs-view")
+  ];
 
-    # UI and visuals
+  uiPlugins = with pkgs.vimPlugins; [
     lualine-nvim
-    nvim-treesitter-context
     transparent-nvim
     fidget-nvim
     onedark-nvim
@@ -41,55 +45,57 @@ with final.pkgs.lib; let
     nvim-scrollbar
     highlight-undo-nvim
     nvim-web-devicons
+    which-key-nvim
+  ];
 
-    # Git integration
+  gitPlugins = with pkgs.vimPlugins; [
     gitsigns-nvim
     diffview-nvim
     neogit
     vim-fugitive
     git-conflict-nvim
+  ];
 
-    # Picker/explorer
+  pickerPlugins = with pkgs.vimPlugins; [
+    snacks-nvim
     oil-nvim
     plenary-nvim
     vim-tmux-navigator
     yazi-nvim
+    flash-nvim
+  ];
 
-    # Quickfix
+  editingPlugins = with pkgs.vimPlugins; [
     quicker-nvim
-
-    # Editing enhancements
     mini-nvim
     vim-unimpaired
-    flash-nvim
-
-    # Utility
-    sqlite-lua
-    which-key-nvim
-    snacks-nvim
     conform-nvim
+  ];
 
-    # LSP helpers
-    trouble-nvim
-    nvim-lint
-    (mkNvimPlugin inputs.nvim-docs-view "nvim-docs-view")
-  ]
-  ++ [
-    # External flake-input plugins built via mkNvimPlugin
+  utilityPlugins = with pkgs.vimPlugins; [
+    sqlite-lua
+  ];
+
+  externalPlugins = [
     (mkNvimPlugin inputs.opencode-nvim "opencode-nvim")
   ];
 
-  # Runtime dependencies for tools used by plugins
-  extraPackages = with pkgs; [
-    # Language servers and tools
-    lua-language-server
-    nil
+  all-plugins =
+    treesitterPlugins
+    ++ completionPlugins
+    ++ lspPlugins
+    ++ uiPlugins
+    ++ gitPlugins
+    ++ pickerPlugins
+    ++ editingPlugins
+    ++ utilityPlugins
+    ++ externalPlugins;
+
+  cliTools = with pkgs; [
     nodejs
     python3
     uv
     opencode
-
-    # Tools used by pickers and other plugins
     fd
     ripgrep
     git
@@ -101,8 +107,9 @@ with final.pkgs.lib; let
     mermaid-cli
     yazi
     tree-sitter
+  ];
 
-    # Formatters/linters
+  formatAndLintTools = with pkgs; [
     alejandra
     ruff
     stylua
@@ -117,8 +124,18 @@ with final.pkgs.lib; let
     php83Packages.php-cs-fixer
     php83Packages.php-codesniffer
     phpstan
+    deadnix
+    statix
+    shellcheck
+    rubocop
+    eslint_d
+    htmlhint
+    markdownlint-cli2
+  ];
 
-    # LSP servers
+  lspServers = with pkgs; [
+    lua-language-server
+    nil
     basedpyright
     bash-language-server
     clang-tools
@@ -131,15 +148,10 @@ with final.pkgs.lib; let
     typescript-language-server
     vscode-langservers-extracted
     yaml-language-server
-    deadnix
-    statix
-    shellcheck
-    rubocop
-    eslint_d
-    htmlhint
-    markdownlint-cli2
     rust-analyzer
   ];
+
+  extraPackages = cliTools ++ formatAndLintTools ++ lspServers;
 in {
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
