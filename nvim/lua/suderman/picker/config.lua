@@ -61,6 +61,7 @@ function M.setup(snacks)
 				explorer = {
 					enabled = true,
 					finder = "explorer",
+					hidden = true,
 					layout = { hidden = { "input", "preview" } },
 					replace_netrw = true,
 					win = {
