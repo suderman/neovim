@@ -13,12 +13,13 @@
 - Conform owns `format_on_save`. Do not add a second `BufWritePre` formatter.
 - OpenCode plugin should prefer `~/.local/bin/opencode`; Nix package may lag user config.
 - Entrypoints in `nvim/plugin/` should stay thin. Real code lives under `nvim/lua/suderman/`.
-- Recent cleanup split UI, LSP, picker, and git config. Keep this pattern.
+- Recent cleanup split UI, LSP, picker, git, Treesitter, completion, formatting,
+  lint, and OpenCode config. Keep this pattern.
+- Nix overlay plugin/tool lists are grouped by purpose. Avoid churn there unless
+  adding or removing packages.
 
-## Remaining cleanup plan
+## Cleanup status
 
-1. Treesitter slice: keep native `vim.treesitter.start`/fold setup clear; split textobject maps only if it improves readability.
-2. Completion/formatting/lint polish: no big rewrites; just comments, grouping, and obvious drift.
-3. Optional OpenCode polish: split setup/keymaps only if file feels noisy.
-4. Nix overlay readability pass: group plugin/tool lists; avoid churn.
-5. Final audit: stale-name grep, `nix build .`, headless load, health, keymap smoke checks.
+The 2026 config cleanup plan is complete. For future work, keep changes small,
+preserve native Neovim 0.12 patterns, and run the standard Nix build plus
+headless load before done.
