@@ -1,6 +1,4 @@
 -- suderman opts.lua
--- Basic Neovim options migrated from nvf/basic.nix, nvf/appearance.nix, nvf/editing.nix
-
 local opt = vim.o
 local g = vim.g
 
@@ -15,7 +13,7 @@ opt.signcolumn = "yes"
 opt.termguicolors = true
 opt.showmode = false
 
--- Transparency (from nvf/appearance.nix)
+-- Transparency
 -- Note: transparent.nvim is loaded in plugin/ui.lua
 
 -- Popup menu appearance
@@ -38,5 +36,5 @@ opt.listchars = "tab:> ,extends:…,precedes:…,nbsp:␣"
 opt.list = true
 opt.wildmode = "list:longest,list:full"
 
--- Neovide support (from nvf/clipboard.nix)
+-- Neovide support
 g.neovide_opacity = 0.8
