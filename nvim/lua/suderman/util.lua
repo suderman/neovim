@@ -21,6 +21,19 @@ function M.add_to_quickfix()
 	print(string.format("Added to quickfix: %s:%d", file, pos[1]))
 end
 
+function M.toggle_quickfix()
+	for _, win in pairs(vim.fn.getwininfo() or {}) do
+		if win.quickfix == 1 then
+			vim.cmd.cclose()
+			return
+		end
+	end
+
+	if not vim.tbl_isempty(vim.fn.getqflist()) then
+		vim.cmd.copen()
+	end
+end
+
 function M.load_local_config()
 	local dir = vim.fn.expand("~/.config/nvim/lua/local")
 	local file = dir .. "/init.lua"

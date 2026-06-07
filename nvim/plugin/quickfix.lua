@@ -33,4 +33,5 @@ vim.keymap.set("n", "<leader>ql", function()
 	require("quicker").toggle({ loclist = true })
 end, { desc = "Toggle loclist" })
 
+vim.keymap.set("n", "<C-c>", require("suderman.util").toggle_quickfix, { desc = "Toggle quickfix list" })
 vim.keymap.set("n", "gq", require("suderman.util").add_to_quickfix, { desc = "Append current position to quickfix" })

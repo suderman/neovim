@@ -38,6 +38,9 @@ nmap("k", "gk", "Up a row")
 vmap("<", "<gv", "Outdent")
 vmap(">", ">gv", "Indent")
 
+-- Yank to end of line, matching Vim's D/C behavior.
+nmap("Y", "y$", "Yank to end of line")
+
 -- Tmux navigator disable when zoomed
 vim.g.tmux_navigator_disable_when_zoomed = 1
 vim.g.tmux_navigator_no_mappings = 1
