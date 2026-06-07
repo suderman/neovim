@@ -1,7 +1,5 @@
--- suderman util.lua
 local M = {}
 
--- Add current position to quickfix
 function M.add_to_quickfix()
 	local pos = vim.api.nvim_win_get_cursor(0)
 	local file = vim.api.nvim_buf_get_name(0)
@@ -23,17 +21,14 @@ function M.add_to_quickfix()
 	print(string.format("Added to quickfix: %s:%d", file, pos[1]))
 end
 
--- Local config loader
--- Loads optional local config from ~/.config/nvim/lua/local/init.lua
 function M.load_local_config()
 	local dir = vim.fn.expand("~/.config/nvim/lua/local")
 	local file = dir .. "/init.lua"
 
 	if vim.fn.filereadable(file) == 0 then
-		-- Don't create the file automatically; just skip loading
 		return
 	end
-	-- Use pcall in case the module has errors or doesn't exist
+
 	pcall(require, "local")
 end
 
