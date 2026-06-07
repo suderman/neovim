@@ -79,23 +79,18 @@ require('treesitter-context').setup {
 -- TS context commentstring
 require('ts_context_commentstring').setup()
 
--- Tree-sitter based folding
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+-- nvim-treesitter 0.10+ only manages parsers/queries. Highlight, folds, and
+-- indentation are Neovim/native buffer options now.
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('suderman-treesitter', { clear = true }),
+  callback = function(args)
+    local ok = pcall(vim.treesitter.start, args.buf)
+    if not ok then
+      return
+    end
 
--- nvim-treesitter incremental selection config
-require('nvim-treesitter.configs').setup({
-  auto_install = false,
-  sync_install = false,
-  ensure_installed = {},
-  indent = { enable = true },
-  highlight = { enable = true, additional_vim_regex_highlighting = false },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = 'gnn',
-      node_incremental = 'grn',
-      scope_incremental = 'grc',
-      node_decremental = 'grm',
-    },
-  },
+    vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    vim.wo.foldmethod = 'expr'
+  end,
 })
