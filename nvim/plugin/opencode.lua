@@ -24,6 +24,15 @@ opencode.setup({
 	preferred_completion = "blink",
 	default_mode = "mini",
 	default_global_keymaps = false,
+	keymap = {
+		input_window = {
+			["<tab>"] = { "switch_mode", mode = { "n", "i" }, desc = "Switch agent mode", defer_to_completion = true },
+			["<M-m>"] = false,
+		},
+		output_window = {
+			["<tab>"] = { "switch_mode", mode = { "n" }, desc = "Switch agent mode" },
+		},
+	},
 })
 
 local api = require("opencode.api")
