@@ -1,12 +1,6 @@
 -- suderman util.lua
 local M = {}
 
--- Toggle autoformat
-function M.toggle_format()
-	vim.b.disableFormatSave = not vim.b.disableFormatSave
-	print("Autoformat: " .. (vim.b.disableFormatSave and "disabled" or "enabled"))
-end
-
 -- Add current position to quickfix
 function M.add_to_quickfix()
 	local pos = vim.api.nvim_win_get_cursor(0)
