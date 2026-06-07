@@ -17,6 +17,8 @@ conform.setup({
 		python = { "ruff_format", "ruff" },
 		php = { "php_cs_fixer" },
 		twig = { "djlint" },
+		c = { "clang_format" },
+		cpp = { "clang_format" },
 		rust = { "rustfmt" },
 		go = { "gofmt", "goimports" },
 		javascript = { "prettierd", "prettier" },
