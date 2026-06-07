@@ -75,7 +75,12 @@ config("nil_ls", {
 config("basedpyright")
 
 -- Go
-config("gopls")
+config("gopls", {
+	filetypes = { "go", "gomod", "gowork" },
+})
+
+-- C/C++
+config("clangd")
 
 -- Rust
 config("rust_analyzer", {
@@ -90,13 +95,31 @@ config("rust_analyzer", {
 config("ts_ls")
 
 -- HTML
-config("html")
+config("html", {
+	filetypes = { "html" },
+})
 
 -- CSS
 config("cssls")
 
 -- Tailwind CSS
-config("tailwindcss")
+config("tailwindcss", {
+	filetypes = {
+		"html",
+		"css",
+		"scss",
+		"less",
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"php",
+		"twig",
+		"markdown",
+		"vue",
+		"svelte",
+	},
+})
 
 -- Bash
 config("bashls")
@@ -105,16 +128,30 @@ config("bashls")
 config("jsonls")
 
 -- YAML
-config("yamlls")
+config("yamlls", {
+	filetypes = { "yaml" },
+})
 
 -- PHP
 config("phpactor")
+
+-- Markdown
+config("marksman", {
+	filetypes = { "markdown" },
+})
+
+-- Ruby
+config("solargraph")
+
+-- SQL
+config("sqls")
 
 vim.lsp.enable({
 	"lua_ls",
 	"nil_ls",
 	"basedpyright",
 	"gopls",
+	"clangd",
 	"rust_analyzer",
 	"ts_ls",
 	"html",
@@ -124,4 +161,7 @@ vim.lsp.enable({
 	"jsonls",
 	"yamlls",
 	"phpactor",
+	"marksman",
+	"solargraph",
+	"sqls",
 })
