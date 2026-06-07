@@ -31,12 +31,12 @@ require('onedark').setup({
 })
 require('onedark').load()
 
--- Render markdown setup for markdown and codecompanion filetypes
+-- Render markdown setup for markdown and opencode output buffers
 -- Module name is 'render-markdown' (not 'render-md')
 local ok_rm, rm = pcall(require, 'render-markdown')
 if ok_rm then
   rm.setup({
-    file_types = { 'markdown', 'codecompanion' },
+    file_types = { 'markdown', 'opencode_output' },
   })
 end
 
@@ -107,7 +107,7 @@ if vim.g.neovide then
 end
 
 -- ============================================================
--- Lualine statusline (from nvf/appearance.nix and nvf/codecompanion/mcphub.nix)
+-- Lualine statusline (from nvf/appearance.nix)
 -- Guard to prevent double-loading if this file is ever imported standalone
 if vim.g.did_load_statusline_plugin then
   return
@@ -170,43 +170,6 @@ local function snacks_picker_cwd()
   return cwd
 end
 
--- Optional mcphub status
-local function mcphub_status()
-  if not vim.g.loaded_mcphub then
-    return ''
-  end
-  local count = vim.g.mcphub_servers_count or 0
-  local status = vim.g.mcphub_status or 'stopped'
-  local executing = vim.g.mcphub_executing
-  if status == 'stopped' then
-    return '󰐻 -'
-  end
-  if executing or status == 'starting' or status == 'restarting' then
-    local frames = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' }
-    local frame = math.floor(vim.loop.now() / 100) % #frames + 1
-    return '󰐻 ' .. frames[frame]
-  end
-  if status == 'ready' or status == 'restarted' then
-    return '󰐻 ' .. count
-  end
-  return '󰐻 ' .. status
-end
-
-local function mcphub_status_color()
-  if not vim.g.loaded_mcphub then
-    return { fg = '#6c7086' }
-  end
-
-  local status = vim.g.mcphub_status or 'stopped'
-  if status == 'ready' or status == 'restarted' then
-    return { fg = '#50fa7b' }
-  elseif status == 'starting' or status == 'restarting' then
-    return { fg = '#ffb86c' }
-  end
-
-  return { fg = '#ff5555' }
-end
-
 -- Lualine configuration
 local ok_lualine, lualine = pcall(require, 'lualine')
 if ok_lualine then
@@ -231,17 +194,7 @@ if ok_lualine then
         color_info = { fg = 'cyan' },
       },
     },
-    {
-      function()
-        return mcphub_status()
-      end,
-      color = mcphub_status_color,
-    },
   }
-
-  if vim.g.loaded_codecompanion then
-    table.insert(lualine_x, 'codecompanion')
-  end
 
   lualine.setup({
     options = {
