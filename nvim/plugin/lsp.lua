@@ -1,14 +1,11 @@
 -- plugin/lsp.lua
 -- LSP configuration migrated from nvf/debug.nix and nvf/languages.nix
--- Uses lspconfig (Neovim 0.11+ still supports lspconfig, with deprecation warnings)
+-- Uses Neovim 0.11 native vim.lsp.config/vim.lsp.enable
 
 if vim.g.did_load_lsp_plugin then
   return
 end
 vim.g.did_load_lsp_plugin = true
-
--- Suppress lspconfig deprecation warnings (use vim.lsp.config when ready)
-vim.deprecate = function() end
 
 -- Global diagnostics configuration (vim.diagnostic.config already in init.lua)
 
@@ -34,11 +31,20 @@ vim.keymap.set('n', '<leader>f', function()
   print("Autoformat: " .. (vim.b.disableFormatSave and "disabled" or "enabled"))
 end, { desc = 'Toggle autoformat' })
 
--- LSP servers using lspconfig
-local lspconfig = require('lspconfig')
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+local ok_blink, blink = pcall(require, 'blink.cmp')
+if ok_blink then
+  capabilities = blink.get_lsp_capabilities(capabilities)
+end
+
+local function config(server, opts)
+  opts = opts or {}
+  opts.capabilities = vim.tbl_deep_extend('force', capabilities, opts.capabilities or {})
+  vim.lsp.config(server, opts)
+end
 
 -- Lua
-lspconfig.lua_ls.setup({
+config('lua_ls', {
   settings = {
     Lua = {
       runtime = { version = 'LuaJIT' },
@@ -50,7 +56,7 @@ lspconfig.lua_ls.setup({
 })
 
 -- Nix
-lspconfig.nil_ls.setup({
+config('nil_ls', {
   settings = {
     ['nil-ls'] = {
       formatting = { command = { "alejandra" } },
@@ -59,13 +65,13 @@ lspconfig.nil_ls.setup({
 })
 
 -- Python
-lspconfig.pyright.setup({})
+config('basedpyright')
 
 -- Go
-lspconfig.gopls.setup({})
+config('gopls')
 
 -- Rust
-lspconfig.rust_analyzer.setup({
+config('rust_analyzer', {
   settings = {
     ['rust-analyzer'] = {
       cargo = { allFeatures = true },
@@ -74,22 +80,37 @@ lspconfig.rust_analyzer.setup({
 })
 
 -- TypeScript/JavaScript (use ts_ls, not tsserver)
-lspconfig.ts_ls.setup({})
+config('ts_ls')
 
 -- HTML
-lspconfig.html.setup({})
+config('html')
 
 -- CSS
-lspconfig.cssls.setup({})
+config('cssls')
 
 -- Tailwind CSS
-lspconfig.tailwindcss.setup({})
+config('tailwindcss')
 
 -- Bash
-lspconfig.bashls.setup({})
+config('bashls')
 
 -- JSON
-lspconfig.jsonls.setup({})
+config('jsonls')
 
 -- YAML
-lspconfig.yamlls.setup({})
+config('yamlls')
+
+vim.lsp.enable({
+  'lua_ls',
+  'nil_ls',
+  'basedpyright',
+  'gopls',
+  'rust_analyzer',
+  'ts_ls',
+  'html',
+  'cssls',
+  'tailwindcss',
+  'bashls',
+  'jsonls',
+  'yamlls',
+})
