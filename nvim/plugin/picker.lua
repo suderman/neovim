@@ -1,6 +1,6 @@
 -- plugin/picker.lua
 -- Picker/explorer configuration migrated from nvf/picker/*.nix
--- Uses snacks.nvim picker (primary) and telescope (fallback)
+-- Uses snacks.nvim picker
 
 if vim.g.did_load_picker_plugin then
   return
@@ -103,66 +103,10 @@ if ok_snacks then
       enabled = true,
     },
     styles = {
-      -- Old nvf config used a blink-cmp-specific escape action here.
-      -- Keep plain <esc> behavior with nvim-cmp.
       input = { keys = { i_esc = { "<esc>" } } },
       notification = { wo = { wrap = true } },
     },
   })
-end
-
--- Telescope setup (used as fallback for some pickers)
-local ok_telescope, telescope = pcall(require, 'telescope')
-if ok_telescope then
-  local actions = require('telescope.actions')
-
-  telescope.setup({
-    defaults = {
-      path_display = { 'truncate' },
-      layout_strategy = 'vertical',
-      layout_config = {
-        vertical = {
-          width = function(_, max_columns)
-            return math.floor(max_columns * 0.99)
-          end,
-          height = function(_, _, max_lines)
-            return math.floor(max_lines * 0.99)
-          end,
-          prompt_position = 'bottom',
-          preview_cutoff = 0,
-        },
-      },
-      mappings = {
-        i = {
-          ['<C-q>'] = actions.send_to_qflist,
-          ['<C-l>'] = actions.send_to_loclist,
-        },
-        n = {
-          q = actions.close,
-        },
-      },
-      history = {
-        path = vim.fn.stdpath('data') .. '/telescope_history.sqlite3',
-        limit = 1000,
-      },
-      color_devicons = true,
-      set_env = { ['COLORTERM'] = 'truecolor' },
-      prompt_prefix = '   ',
-      initial_mode = 'insert',
-      vimgrep_arguments = {
-        'rg', '-L', '--color=never', '--no-heading', '--with-filename',
-        '--line-number', '--column', '--smart-case',
-      },
-    },
-    extensions = {
-      fzy_native = {
-        override_generic_sorter = false,
-        override_file_sorter = true,
-      },
-    },
-  })
-
-  telescope.load_extension('fzy_native')
 end
 
 -- === Snacks picker keymaps (from nvf/picker/default.nix) ===
@@ -254,79 +198,44 @@ if ok_snacks then
     Snacks.explorer()
   end, { desc = 'File Explorer' })
 
-  -- Files (via telescope fallback if snacks can't)
+  -- Files
   vim.keymap.set('n', '<leader>tp', function()
     Snacks.picker.pick({ source = "files", focus = "input" })
-  end, { desc = '[Telescope] find files' })
+  end, { desc = '[Snacks] find files' })
 
   -- Grep
   vim.keymap.set('n', '<C-g>', function()
     Snacks.picker.pick({ source = "grep", focus = "input" })
   end, { desc = '[Snacks] live grep' })
 
-else
-  -- Fallback to telescope if snacks not available
-  vim.keymap.set('n', '<space>', function()
-    require('telescope.builtin').find_files()
-  end, { desc = 'find files' })
-
-  vim.keymap.set('n', 'K', function()
-    require('telescope.builtin').buffers()
-  end, { desc = 'Buffers' })
-
-  vim.keymap.set('n', '<leader>e', function()
-    require('telescope.builtin').find_files()
-  end, { desc = 'File Explorer' })
-
-  vim.keymap.set('n', 'H', function()
-    require('telescope.builtin').find_files()
-  end, { desc = 'File Explorer' })
-
-  vim.keymap.set('n', '<leader>tp', function()
-    require('telescope.builtin').find_files()
-  end, { desc = 'find files' })
-
-  vim.keymap.set('n', '<C-g>', function()
-    require('telescope.builtin').live_grep()
-  end, { desc = 'live grep' })
 end
 
--- === Telescope-only keymaps (not in snacks) ===
-if ok_telescope then
-  -- \\ - Last buffer
-  vim.keymap.set('n', '\\\\', '<C-^>', { desc = 'Last Buffer' })
+-- \\ - Last buffer
+vim.keymap.set('n', '\\\\', '<C-^>', { desc = 'Last Buffer' })
 
-  -- <M-p> - Oldfiles
+if ok_snacks then
   vim.keymap.set('n', '<M-p>', function()
-    require('telescope.builtin').oldfiles()
+    Snacks.picker.pick({ source = "recent", focus = "list" })
   end, { desc = 'old files' })
 
-  -- <leader>tg - Project files
   vim.keymap.set('n', '<leader>tg', function()
-    local ok = pcall(require('telescope.builtin').git_files)
-    if not ok then
-      require('telescope.builtin').find_files()
-    end
+    Snacks.picker.pick({ source = "git_files", focus = "input" })
   end, { desc = 'project files' })
 
-  -- <leader>tbb - Buffers
   vim.keymap.set('n', '<leader>tbb', function()
-    require('telescope.builtin').buffers()
+    Snacks.picker.pick({ source = "buffers", focus = "list" })
   end, { desc = 'buffers' })
 
-  -- <leader>tc - Quickfix
   vim.keymap.set('n', '<leader>tc', function()
-    require('telescope.builtin').quickfix()
+    Snacks.picker.pick({ source = "qflist", focus = "list" })
   end, { desc = 'quickfix list' })
 
-  -- <leader>tq - Command history
   vim.keymap.set('n', '<leader>tq', function()
-    require('telescope.builtin').command_history()
+    Snacks.picker.pick({ source = "command_history", focus = "list" })
   end, { desc = 'command history' })
 
-  -- <leader>tl - Location list
   vim.keymap.set('n', '<leader>tl', function()
-    require('telescope.builtin').loclist()
+    Snacks.picker.pick({ source = "loclist", focus = "list" })
   end, { desc = 'loclist' })
 end
 
