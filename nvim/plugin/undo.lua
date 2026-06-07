@@ -4,4 +4,4 @@ if vim.g.did_load_undo_plugin then
 end
 vim.g.did_load_undo_plugin = true
 
--- Undo file location is set in init.lua via opt.undofile.
+-- Undo file location is set in suderman.opts via opt.undofile.
