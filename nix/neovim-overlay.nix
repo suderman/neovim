@@ -23,17 +23,8 @@ with final.pkgs.lib; let
     nvim-treesitter-textobjects
     nvim-ts-context-commentstring
 
-    # Completion (nvim-cmp based - blink-cmp not in nixpkgs)
-    nvim-cmp
-    cmp_luasnip
-    lspkind-nvim
-    cmp-nvim-lsp
-    cmp-nvim-lsp-signature-help
-    cmp-buffer
-    cmp-path
-    cmp-nvim-lua
-    cmp-cmdline
-    cmp-cmdline-history
+    # Completion
+    blink-cmp
     luasnip
 
     # LSP and diagnostics
@@ -62,8 +53,6 @@ with final.pkgs.lib; let
     git-conflict-nvim
 
     # Picker/explorer
-    telescope-nvim
-    telescope-fzy-native-nvim
     oil-nvim
     plenary-nvim
     vim-tmux-navigator
