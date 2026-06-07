@@ -7,23 +7,12 @@
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
 
     # Neovim plugins from git
-    codecompanion-nvim.url = "github:olimorris/codecompanion.nvim";
-    codecompanion-nvim.flake = false;
-
-    codecompanion-spinner-nvim.url = "github:franco-ruggeri/codecompanion-spinner.nvim";
-    codecompanion-spinner-nvim.flake = false;
-
-    codecompanion-lualine-nvim.url = "github:franco-ruggeri/codecompanion-lualine.nvim";
-    codecompanion-lualine-nvim.flake = false;
-
-    mcphub-nvim.url = "github:ravitemer/mcphub.nvim";
-    mcphub-nvim.inputs.nixpkgs.follows = "nixpkgs";
+    opencode-nvim.url = "github:sudo-tee/opencode.nvim";
+    opencode-nvim.flake = false;
 
     nvim-docs-view.url = "github:amrbashir/nvim-docs-view";
     nvim-docs-view.flake = false;
 
-    mcp-hub.url = "github:ravitemer/mcp-hub";
-    mcp-hub.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs @ {

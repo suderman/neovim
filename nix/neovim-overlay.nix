@@ -84,10 +84,7 @@ with final.pkgs.lib; let
   ]
   ++ [
     # External flake-input plugins built via mkNvimPlugin
-    (mkNvimPlugin inputs.codecompanion-nvim "codecompanion-nvim")
-    (mkNvimPlugin inputs.codecompanion-spinner-nvim "codecompanion-spinner-nvim")
-    (mkNvimPlugin inputs.codecompanion-lualine-nvim "codecompanion-lualine-nvim")
-    (mkNvimPlugin inputs.mcphub-nvim "mcphub-nvim")
+    (mkNvimPlugin inputs.opencode-nvim "opencode-nvim")
     # Goose.nvim (custom plugin from nvf/goose.nix)
     (pkgs.vimUtils.buildVimPlugin rec {
       pname = "goose.nvim";
