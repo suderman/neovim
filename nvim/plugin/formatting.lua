@@ -58,7 +58,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
       return
     end
     local filetype = vim.bo[bufnr].filetype
-    if filetype == '' or filetype == 'qf' or filetype == 'netrw' or filetype == 'TelescopePrompt' then
+    if filetype == '' or filetype == 'qf' or filetype == 'netrw' or filetype == 'snacks_picker_input' then
       return
     end
     -- Let conform handle it if available

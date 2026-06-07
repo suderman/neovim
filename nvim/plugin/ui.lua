@@ -124,7 +124,7 @@ local function lsp_names()
     toggleterm = true,
     NvimTree = true,
     ["neo-tree"] = true,
-    TelescopePrompt = true,
+    snacks_picker_input = true,
   }
 
   if excluded_buf_ft[buf_ft] then
@@ -458,7 +458,7 @@ if ok_smartcol then
     colorcolumn = "100",
     custom_colorcolumn = { default = "100" },
     disabled_filetypes = {
-      "netrw", "TelescopePrompt", "TelescopeResults", "neo-tree", "NvimTree",
+      "netrw", "snacks_picker_list", "snacks_picker_input", "neo-tree", "NvimTree",
       "qf", "help", "dashboard", "lazy", "mason", "DiffviewFiles", "DiffviewFileHistory",
     },
   })
@@ -469,9 +469,9 @@ local ok_scrollbar = pcall(require, 'scrollbar')
 if ok_scrollbar then
   require('scrollbar').setup({
     excluded_filetypes = {
-      "prompt", "TelescopePrompt", "neo-tree", "NvimTree", "Notify", "alpha",
+      "prompt", "snacks_picker_list", "snacks_picker_input", "neo-tree", "NvimTree", "Notify", "alpha",
       "dashboard", "fern", "fzf", "hg", "mason", "neogit", "nerdtree",
-      "null-ls", "snacks", "snacks_picker", "snacks_picker_input", "telescope",
+      "null-ls", "snacks", "snacks_picker",
       "qf", "help", "lspinfo", "man",
     },
     excluded_buftypes = { "terminal" },
