@@ -40,7 +40,6 @@ with final.pkgs.lib; let
     render-markdown-nvim
     nvim-lightbulb
     nvim-scrollbar
-    smartcolumn-nvim
     highlight-undo-nvim
     nvim-web-devicons
 

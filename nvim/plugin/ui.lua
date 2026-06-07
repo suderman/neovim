@@ -49,6 +49,32 @@ require("oil").setup({
 	},
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("suderman-colorcolumn", { clear = true }),
+	callback = function(args)
+		local disabled_filetypes = {
+			netrw = true,
+			snacks_picker_list = true,
+			snacks_picker_input = true,
+			["neo-tree"] = true,
+			NvimTree = true,
+			qf = true,
+			help = true,
+			dashboard = true,
+			lazy = true,
+			mason = true,
+			DiffviewFiles = true,
+			DiffviewFileHistory = true,
+		}
+
+		if disabled_filetypes[vim.bo[args.buf].filetype] then
+			vim.wo.colorcolumn = ""
+		else
+			vim.wo.colorcolumn = "100"
+		end
+	end,
+})
+
 if vim.g.neovide then
 	vim.g.neovide_scale_factor = 1.0
 
@@ -330,28 +356,6 @@ if ok_hlundo then
 	require("highlight-undo").setup({
 		undo = { hlgroup = "HighlightUndo", duration = 300 },
 		redo = { hlgroup = "HighlightUndo", duration = 300 },
-	})
-end
-
-local ok_smartcol = pcall(require, "smartcolumn")
-if ok_smartcol then
-	require("smartcolumn").setup({
-		colorcolumn = "100",
-		custom_colorcolumn = { default = "100" },
-		disabled_filetypes = {
-			"netrw",
-			"snacks_picker_list",
-			"snacks_picker_input",
-			"neo-tree",
-			"NvimTree",
-			"qf",
-			"help",
-			"dashboard",
-			"lazy",
-			"mason",
-			"DiffviewFiles",
-			"DiffviewFileHistory",
-		},
 	})
 end
 
