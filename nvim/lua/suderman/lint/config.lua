@@ -4,42 +4,9 @@ local function path_exists(path)
 	return vim.uv.fs_stat(path) ~= nil
 end
 
-local function bufnr_from_lint_context(ctx)
-	if type(ctx) == "table" then
-		return ctx.bufnr or ctx.buf or vim.api.nvim_get_current_buf()
-	end
-
-	return ctx
-end
-
-local function filename_from_lint_context(ctx)
-	if type(ctx) == "table" then
-		if type(ctx.filename) == "string" and ctx.filename ~= "" then
-			return ctx.filename
-		end
-
-		if type(ctx.file) == "string" and ctx.file ~= "" then
-			return ctx.file
-		end
-
-		if type(ctx.path) == "string" and ctx.path ~= "" then
-			return ctx.path
-		end
-	end
-
-	local buf = bufnr_from_lint_context(ctx)
+local function start_dir(buf)
 	local filename = vim.api.nvim_buf_get_name(buf)
-
-	if filename == "" then
-		return nil
-	end
-
-	return filename
-end
-
-local function start_dir(ctx)
-	local filename = filename_from_lint_context(ctx)
-	if filename then
+	if filename ~= "" then
 		return vim.fs.dirname(filename)
 	end
 
@@ -133,26 +100,14 @@ local function configure_php(lint)
 			"ruleset.xml",
 		}
 
-		phpcs.args = {
-			"-q",
-			"--report=json",
-			function(ctx)
-				local buf = bufnr_from_lint_context(ctx)
-				local config = find_upward(buf, phpcs.required_files)
-				if config then
-					return "--standard=" .. config
-				end
-				return nil
-			end,
-			function(ctx)
-				local filename = filename_from_lint_context(ctx)
-				if filename then
-					return "--stdin-path=" .. filename
-				end
-				return nil
-			end,
-			"-",
-		}
+		phpcs.cwd = function(buf)
+			local config = find_upward(buf, phpcs.required_files)
+			if config then
+				return vim.fs.dirname(config)
+			end
+
+			return start_dir(buf)
+		end
 	end
 
 	local phpstan = lint.linters.phpstan
