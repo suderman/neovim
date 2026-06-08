@@ -48,6 +48,15 @@ local server_configs = {
 			},
 		},
 	},
+	phpactor = {
+		root_markers = { ".phpactor.json", "composer.json", ".git" },
+		init_options = {
+			["worse_reflection.additive_stubs"] = {
+				"theme/vendor/php-stubs/wordpress-stubs/wordpress-stubs.php",
+				"vendor/php-stubs/wordpress-stubs/wordpress-stubs.php",
+			},
+		},
+	},
 	html = {
 		filetypes = { "html" },
 	},
