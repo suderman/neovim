@@ -50,11 +50,16 @@ local server_configs = {
 	},
 	phpactor = {
 		root_markers = { ".phpactor.json", "composer.json", ".git" },
-		init_options = {
-			["worse_reflection.additive_stubs"] = {
-				"theme/vendor/php-stubs/wordpress-stubs/wordpress-stubs.php",
-				"vendor/php-stubs/wordpress-stubs/wordpress-stubs.php",
-			},
+		handlers = {
+			["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+				if result and result.diagnostics then
+					result.diagnostics = vim.tbl_filter(function(diagnostic)
+						return diagnostic.code ~= "worse.unresolved_name"
+					end, result.diagnostics)
+				end
+
+				return vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+			end,
 		},
 	},
 	html = {
