@@ -100,14 +100,6 @@ local function configure_php(lint)
 			"ruleset.xml",
 		}
 
-		phpcs.cwd = function(buf)
-			local config = find_upward(buf, phpcs.required_files)
-			if config then
-				return vim.fs.dirname(config)
-			end
-
-			return start_dir(buf)
-		end
 	end
 
 	local phpstan = lint.linters.phpstan
@@ -171,7 +163,18 @@ local function lint_buffer(lint, buf)
 		return
 	end
 
-	lint.try_lint(eligible)
+	local opts = nil
+	if ft == "php" then
+		local phpcs = lint.linters.phpcs
+		if phpcs and phpcs.required_files then
+			local config = find_upward(buf, phpcs.required_files)
+			if config then
+				opts = { cwd = vim.fs.dirname(config) }
+			end
+		end
+	end
+
+	lint.try_lint(eligible, opts)
 end
 
 function M.setup(lint)
