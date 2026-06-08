@@ -99,6 +99,22 @@ local function configure_php(lint)
 			".phpcs.xml.dist",
 			"ruleset.xml",
 		}
+
+		phpcs.args = {
+			"-q",
+			"--report=json",
+			function(buf)
+				local config = find_upward(buf, phpcs.required_files)
+				if config then
+					return "--standard=" .. config
+				end
+				return nil
+			end,
+			function(buf)
+				return "--stdin-path=" .. vim.api.nvim_buf_get_name(buf)
+			end,
+			"-",
+		}
 	end
 
 	local phpstan = lint.linters.phpstan
