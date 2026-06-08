@@ -5,6 +5,10 @@ local function path_exists(path)
 end
 
 local function start_dir(buf)
+	if type(buf) == "table" then
+		buf = buf.bufnr or buf.buf or 0
+	end
+
 	local filename = vim.api.nvim_buf_get_name(buf)
 	if filename ~= "" then
 		return vim.fs.dirname(filename)
@@ -32,6 +36,14 @@ local function find_upward(buf, files)
 	end
 
 	return nil
+end
+
+local function bufnr_from_lint_context(ctx)
+	if type(ctx) == "table" then
+		return ctx.bufnr or ctx.buf or 0
+	end
+
+	return ctx
 end
 
 local function composer_mentions_phpstan(buf)
@@ -103,14 +115,16 @@ local function configure_php(lint)
 		phpcs.args = {
 			"-q",
 			"--report=json",
-			function(buf)
+			function(ctx)
+				local buf = bufnr_from_lint_context(ctx)
 				local config = find_upward(buf, phpcs.required_files)
 				if config then
 					return "--standard=" .. config
 				end
 				return nil
 			end,
-			function(buf)
+			function(ctx)
+				local buf = bufnr_from_lint_context(ctx)
 				return "--stdin-path=" .. vim.api.nvim_buf_get_name(buf)
 			end,
 			"-",
