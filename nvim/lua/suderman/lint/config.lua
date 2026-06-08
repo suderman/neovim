@@ -4,13 +4,42 @@ local function path_exists(path)
 	return vim.uv.fs_stat(path) ~= nil
 end
 
-local function start_dir(buf)
-	if type(buf) == "table" then
-		buf = buf.bufnr or buf.buf or 0
+local function bufnr_from_lint_context(ctx)
+	if type(ctx) == "table" then
+		return ctx.bufnr or ctx.buf or vim.api.nvim_get_current_buf()
 	end
 
+	return ctx
+end
+
+local function filename_from_lint_context(ctx)
+	if type(ctx) == "table" then
+		if type(ctx.filename) == "string" and ctx.filename ~= "" then
+			return ctx.filename
+		end
+
+		if type(ctx.file) == "string" and ctx.file ~= "" then
+			return ctx.file
+		end
+
+		if type(ctx.path) == "string" and ctx.path ~= "" then
+			return ctx.path
+		end
+	end
+
+	local buf = bufnr_from_lint_context(ctx)
 	local filename = vim.api.nvim_buf_get_name(buf)
-	if filename ~= "" then
+
+	if filename == "" then
+		return nil
+	end
+
+	return filename
+end
+
+local function start_dir(ctx)
+	local filename = filename_from_lint_context(ctx)
+	if filename then
 		return vim.fs.dirname(filename)
 	end
 
@@ -36,14 +65,6 @@ local function find_upward(buf, files)
 	end
 
 	return nil
-end
-
-local function bufnr_from_lint_context(ctx)
-	if type(ctx) == "table" then
-		return ctx.bufnr or ctx.buf or 0
-	end
-
-	return ctx
 end
 
 local function composer_mentions_phpstan(buf)
@@ -124,8 +145,11 @@ local function configure_php(lint)
 				return nil
 			end,
 			function(ctx)
-				local buf = bufnr_from_lint_context(ctx)
-				return "--stdin-path=" .. vim.api.nvim_buf_get_name(buf)
+				local filename = filename_from_lint_context(ctx)
+				if filename then
+					return "--stdin-path=" .. filename
+				end
+				return nil
 			end,
 			"-",
 		}
