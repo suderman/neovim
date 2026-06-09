@@ -146,6 +146,7 @@ with final.pkgs.lib; let
     sqls
     tailwindcss-language-server
     typescript-language-server
+    vscode-json-languageserver
     vscode-langservers-extracted
     yaml-language-server
     rust-analyzer
