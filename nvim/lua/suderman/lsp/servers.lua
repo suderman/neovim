@@ -34,11 +34,10 @@ local server_configs = {
 		},
 	},
 	nil_ls = {
-		settings = {
-			["nil-ls"] = {
-				formatting = { command = { "alejandra" } },
-			},
-		},
+		on_attach = function(client)
+			client.server_capabilities.documentFormattingProvider = false
+			client.server_capabilities.documentRangeFormattingProvider = false
+		end,
 	},
 	gopls = {
 		filetypes = { "go", "gomod", "gowork" },
