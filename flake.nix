@@ -6,25 +6,20 @@
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
 
-    # Neovim plugins from git
+    # https://github.com/sudo-tee/opencode.nvim
     opencode-nvim.url = "github:sudo-tee/opencode.nvim";
     opencode-nvim.flake = false;
 
+    # https://github.com/amrbashir/nvim-docs-view
     nvim-docs-view.url = "github:amrbashir/nvim-docs-view";
     nvim-docs-view.flake = false;
-
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    flake-utils,
-    ...
-  }: let
-    neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
+  outputs = inputs: let
+    neovim-overlay = import ./nix/neovim-overlay.nix {inherit inputs;};
   in
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs {
+    inputs.flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = import inputs.nixpkgs {
         inherit system;
         overlays = [
           neovim-overlay
