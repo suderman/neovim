@@ -5,6 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     # https://github.com/sudo-tee/opencode.nvim
     opencode-nvim.url = "github:sudo-tee/opencode.nvim";
@@ -29,9 +31,11 @@
           allowUnfree = true;
         };
       };
+      treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
       shell = pkgs.mkShell {
         name = "nvim-devShell";
         buildInputs = with pkgs; [
+          treefmtEval.config.build.wrapper
           lua-language-server
           nil
           stylua
@@ -48,6 +52,7 @@
         default = nvim;
         nvim = pkgs.nvim-pkg;
       };
+      formatter = treefmtEval.config.build.wrapper;
       devShells = {
         default = shell;
       };

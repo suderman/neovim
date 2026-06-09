@@ -233,7 +233,8 @@
         "gen-luarc": "gen-luarc",
         "nixpkgs": "nixpkgs_2",
         "nvim-docs-view": "nvim-docs-view",
-        "opencode-nvim": "opencode-nvim"
+        "opencode-nvim": "opencode-nvim",
+        "treefmt-nix": "treefmt-nix"
       }
     },
     "systems": {
@@ -248,6 +249,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780220602,
+        "narHash": "sha256-eynAfOmbmxJnkp7YewvCEbShNnnYJ9gLLqkzsYtBPeM=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "db947814a175b7ca6ded66e21383d938df01c227",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
         "type": "github"
       }
     }
