@@ -99,7 +99,6 @@ local function configure_php(lint)
 			".phpcs.xml.dist",
 			"ruleset.xml",
 		}
-
 	end
 
 	local phpstan = lint.linters.phpstan
