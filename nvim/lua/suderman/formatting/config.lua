@@ -14,6 +14,10 @@ local php_root_markers = {
 	".git",
 }
 
+local treefmt_root_markers = {
+	"treefmt.nix",
+}
+
 local function php_project_root(filename)
 	return vim.fs.root(filename, php_root_markers) or vim.fn.getcwd()
 end
@@ -27,6 +31,20 @@ local function php_cs_fixer_command(_, ctx)
 	end
 
 	return "php-cs-fixer"
+end
+
+local function treefmt_project_root(filename)
+	return vim.fs.root(filename, treefmt_root_markers)
+end
+
+local function with_treefmt(conform, formatters)
+	return function(bufnr)
+		if conform.get_formatter_info("treefmt", bufnr).available then
+			return { "treefmt" }
+		end
+
+		return formatters
+	end
 end
 
 local function format_on_save(bufnr)
@@ -44,29 +62,38 @@ end
 function M.setup(conform)
 	conform.setup({
 		formatters_by_ft = {
-			nix = { "alejandra" },
+			nix = with_treefmt(conform, { "alejandra" }),
 			lua = { "stylua" },
 			python = { "ruff_format", "ruff" },
-			php = { "php_cs_fixer" },
-			twig = { "djlint" },
+			php = with_treefmt(conform, { "php_cs_fixer" }),
+			twig = with_treefmt(conform, { "djlint" }),
 			c = { "clang_format" },
 			cpp = { "clang_format" },
 			rust = { "rustfmt" },
 			go = { "gofmt", "goimports" },
-			javascript = { "prettierd", "prettier" },
-			typescript = { "prettierd", "prettier" },
-			javascriptreact = { "prettierd", "prettier" },
-			typescriptreact = { "prettierd", "prettier" },
-			html = { "prettierd", "prettier" },
-			css = { "prettierd", "prettier" },
-			json = { "prettierd", "prettier" },
-			yaml = { "prettierd", "prettier" },
-			markdown = { "prettierd", "prettier" },
+			javascript = with_treefmt(conform, { "prettierd", "prettier" }),
+			typescript = with_treefmt(conform, { "prettierd", "prettier" }),
+			javascriptreact = with_treefmt(conform, { "prettierd", "prettier" }),
+			typescriptreact = with_treefmt(conform, { "prettierd", "prettier" }),
+			html = with_treefmt(conform, { "prettierd", "prettier" }),
+			css = with_treefmt(conform, { "prettierd", "prettier" }),
+			json = with_treefmt(conform, { "prettierd", "prettier" }),
+			yaml = with_treefmt(conform, { "prettierd", "prettier" }),
+			markdown = with_treefmt(conform, { "prettierd", "prettier" }),
 			sql = { "sqlfluff" },
 			bash = { "shfmt" },
 			sh = { "shfmt" },
 		},
 		formatters = {
+			treefmt = {
+				command = "treefmt",
+				args = { "$RELATIVE_FILEPATH" },
+				cwd = function(_, ctx)
+					return treefmt_project_root(ctx.filename)
+				end,
+				require_cwd = true,
+				stdin = false,
+			},
 			php_cs_fixer = {
 				command = php_cs_fixer_command,
 				args = { "fix", "$FILENAME" },
