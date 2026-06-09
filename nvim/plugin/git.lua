@@ -1,6 +1,6 @@
 -- plugin/git.lua
 if vim.g.did_load_git_plugin then
-	return
+  return
 end
 vim.g.did_load_git_plugin = true
 

@@ -1,13 +1,13 @@
 -- plugin/treesitter.lua
 if vim.g.did_load_treesitter_plugin then
-	return
+  return
 end
 vim.g.did_load_treesitter_plugin = true
 
 vim.filetype.add({
-	extension = {
-		twig = "twig",
-	},
+  extension = {
+    twig = "twig",
+  },
 })
 
 vim.treesitter.language.register("twig", "twig")

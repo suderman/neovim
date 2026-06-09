@@ -1,16 +1,16 @@
 -- suderman keymaps.lua
 local keymap = vim.keymap.set
 local nmap = function(lhs, rhs, desc)
-	keymap("n", lhs, rhs, { silent = true, desc = desc })
+  keymap("n", lhs, rhs, { silent = true, desc = desc })
 end
 local vmap = function(lhs, rhs, desc)
-	keymap("v", lhs, rhs, { silent = true, desc = desc })
+  keymap("v", lhs, rhs, { silent = true, desc = desc })
 end
 local imap = function(lhs, rhs, desc)
-	keymap("i", lhs, rhs, { silent = true, desc = desc })
+  keymap("i", lhs, rhs, { silent = true, desc = desc })
 end
 local tmap = function(lhs, rhs, desc)
-	keymap("t", lhs, rhs, { silent = true, desc = desc })
+  keymap("t", lhs, rhs, { silent = true, desc = desc })
 end
 
 -- Leader

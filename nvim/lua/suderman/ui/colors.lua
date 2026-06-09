@@ -1,11 +1,11 @@
 require("transparent").setup({
-	extra_groups = {
-		"NormalFloat",
-	},
+  extra_groups = {
+    "NormalFloat",
+  },
 })
 
 require("onedark").setup({
-	style = "darker",
-	transparent = true,
+  style = "darker",
+  transparent = true,
 })
 require("onedark").load()

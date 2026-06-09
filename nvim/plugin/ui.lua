@@ -1,6 +1,6 @@
 -- plugin/ui.lua
 if vim.g.did_load_ui_plugin then
-	return
+  return
 end
 vim.g.did_load_ui_plugin = true
 

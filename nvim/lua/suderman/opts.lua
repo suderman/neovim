@@ -16,11 +16,11 @@ opt.termguicolors = true
 opt.showmode = false
 opt.colorcolumn = "100"
 opt.fillchars = {
-	eob = " ",
-	fold = " ",
-	foldopen = "",
-	foldsep = " ",
-	foldclose = "",
+  eob = " ",
+  fold = " ",
+  foldopen = "",
+  foldsep = " ",
+  foldclose = "",
 }
 
 -- Transparency
@@ -53,10 +53,10 @@ opt.shiftwidth = 2
 opt.virtualedit = "block,insert,onemore"
 opt.formatoptions = "qjl1"
 opt.listchars = {
-	tab = "> ",
-	extends = "…",
-	precedes = "…",
-	nbsp = "␣",
+  tab = "> ",
+  extends = "…",
+  precedes = "…",
+  nbsp = "␣",
 }
 opt.list = true
 opt.wildmode = "list:longest,list:full"

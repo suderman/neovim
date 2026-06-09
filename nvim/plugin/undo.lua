@@ -1,6 +1,6 @@
 -- plugin/undo.lua
 if vim.g.did_load_undo_plugin then
-	return
+  return
 end
 vim.g.did_load_undo_plugin = true
 

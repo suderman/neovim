@@ -2,7 +2,7 @@
 -- Uses blink.cmp
 
 if vim.g.did_load_completion_plugin then
-	return
+  return
 end
 vim.g.did_load_completion_plugin = true
 
