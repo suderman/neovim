@@ -1,5 +1,7 @@
 local M = {}
 
+local tailwind = require("suderman.lsp.tailwind")
+
 local enabled_servers = {
 	"lua_ls",
 	"nil_ls",
@@ -66,6 +68,7 @@ local server_configs = {
 		filetypes = { "html" },
 	},
 	tailwindcss = {
+		root_dir = tailwind.root_dir,
 		filetypes = {
 			"html",
 			"css",
