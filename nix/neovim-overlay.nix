@@ -147,21 +147,7 @@ with final.pkgs.lib; let
     tailwindcss-language-server
     typescript-language-server
     vscode-json-languageserver
-    (vscode-langservers-extracted.overrideAttrs (old: {
-      postInstall =
-        (old.postInstall or "")
-        +
-        # sh
-        ''
-          substituteInPlace "$out/lib/node_modules/vscode-langservers-extracted/package.json" \
-            --replace-fail '"version": "4.10.0",' '"version": "4.10.0", "type": "commonjs",'
-
-          for server in css html json; do
-            substituteInPlace "$out/lib/node_modules/vscode-langservers-extracted/lib/$server-language-server/node/"*ServerMain.js \
-              --replace-fail 'createRequire)(import.meta.url)' 'createRequire)(__filename)'
-          done
-        '';
-    }))
+    vscode-langservers-extracted
     yaml-language-server
     rust-analyzer
   ];
