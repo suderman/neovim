@@ -49,13 +49,19 @@ tmap("<M-h>", "<C-\\><C-n><cmd>EdgerLeft<CR>", "Navigate focus left")
 tmap("<M-j>", "<C-\\><C-n><cmd>EdgerDown<CR>", "Navigate focus down")
 tmap("<M-k>", "<C-\\><C-n><cmd>EdgerUp<CR>", "Navigate focus up")
 tmap("<M-l>", "<C-\\><C-n><cmd>EdgerRight<CR>", "Navigate focus right")
+for key, command in pairs({
+  H = "ResizeLeft",
+  J = "ResizeDown",
+  K = "ResizeUp",
+  L = "ResizeRight",
+  t = "Tab",
+  u = "Horizontal",
+  i = "Vertical",
+  w = "Close",
+}) do
+  tmap("<M-" .. key .. ">", "<C-\\><C-n><cmd>Edger" .. command .. "<CR>", "Edger " .. command)
+end
 tmap("<M-;>", "<C-\\><C-n><C-w>p", "Navigate focus previous")
-
--- Resize windows
-nmap("<M-H>", "<c-w><", "Resize window left")
-nmap("<M-J>", "<c-w>+", "Resize window down")
-nmap("<M-K>", "<c-w>-", "Resize window up")
-nmap("<M-L>", "<c-w>>", "Resize window right")
 
 -- Resize windows in visual mode
 vmap("<M-h>", "<c-w><", "Resize window left")
@@ -72,8 +78,6 @@ imap("<M-l>", "<Right>", "Move cursor right")
 -- Split windows
 nmap("<leader>u", ":sp<CR>", "Split horizontal")
 nmap("<leader>i", ":vs<CR>", "Split vertical")
-nmap("<M-u>", ":sp<CR>", "Split horizontal")
-nmap("<M-i>", ":vs<CR>", "Split vertical")
 nmap("<M-U>", ":sp<CR>", "Split horizontal")
 nmap("<M-I>", ":vs<CR>", "Split vertical")
 nmap("gu", ":sp<CR>", "Split horizontal")
