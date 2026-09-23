@@ -4,7 +4,7 @@ if vim.g.did_load_windows_plugin then
 end
 vim.g.did_load_windows_plugin = true
 
--- Tmux navigator is provided by Nix; its navigation maps live in keymaps.lua.
+require("edger").setup({ modifier = "M" })
 
 vim.keymap.set("n", "<leader>fq", function()
   vim.cmd("fclose!")

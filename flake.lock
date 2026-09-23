@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "edger": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790137484,
+        "narHash": "sha256-1UnPpu1xWn2EL5ylhYk91q7I6V1oUzbcKdjwLWRXlww=",
+        "owner": "suderman",
+        "repo": "edger",
+        "rev": "fc8ec06b5bb92d23bcdda2aba9824001d36ca792",
+        "type": "github"
+      },
+      "original": {
+        "owner": "suderman",
+        "repo": "edger",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -229,6 +245,7 @@
     },
     "root": {
       "inputs": {
+        "edger": "edger",
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
         "nixpkgs": "nixpkgs_2",

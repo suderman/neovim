@@ -41,23 +41,15 @@ vmap(">", ">gv", "Indent")
 -- Yank to end of line, matching Vim's D/C behavior.
 nmap("Y", "y$", "Yank to end of line")
 
--- Tmux navigator disable when zoomed
-vim.g.tmux_navigator_disable_when_zoomed = 1
-vim.g.tmux_navigator_no_mappings = 1
+-- Previous window; directional navigation is configured by Edger in plugin/windows.lua.
+nmap("<M-;>", "<C-w>p", "Navigate focus previous")
 
--- Window navigation with Alt-[h,j,k,l]
-nmap("<M-h>", ":TmuxNavigateLeft<CR>", "Navigate focus left")
-nmap("<M-j>", ":TmuxNavigateDown<CR>", "Navigate focus down")
-nmap("<M-k>", ":TmuxNavigateUp<CR>", "Navigate focus up")
-nmap("<M-l>", ":TmuxNavigateRight<CR>", "Navigate focus right")
-nmap("<M-;>", ":TmuxNavigatePrevious<CR>", "Navigate focus previous")
-
--- Terminal normal mode
-tmap("<M-h>", "<C-\\><C-n>", "Terminal normal mode")
-tmap("<M-j>", "<C-\\><C-n>", "Terminal normal mode")
-tmap("<M-k>", "<C-\\><C-n>", "Terminal normal mode")
-tmap("<M-l>", "<C-\\><C-n>", "Terminal normal mode")
-tmap("<M-;>", "<C-\\><C-n>", "Terminal normal mode")
+-- Navigate directly from terminal mode.
+tmap("<M-h>", "<C-\\><C-n><cmd>EdgerLeft<CR>", "Navigate focus left")
+tmap("<M-j>", "<C-\\><C-n><cmd>EdgerDown<CR>", "Navigate focus down")
+tmap("<M-k>", "<C-\\><C-n><cmd>EdgerUp<CR>", "Navigate focus up")
+tmap("<M-l>", "<C-\\><C-n><cmd>EdgerRight<CR>", "Navigate focus right")
+tmap("<M-;>", "<C-\\><C-n><C-w>p", "Navigate focus previous")
 
 -- Resize windows
 nmap("<M-H>", "<c-w><", "Resize window left")

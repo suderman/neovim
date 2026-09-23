@@ -60,7 +60,6 @@ with final.pkgs.lib; let
     snacks-nvim
     oil-nvim
     plenary-nvim
-    vim-tmux-navigator
     yazi-nvim
     flash-nvim
   ];
@@ -78,6 +77,7 @@ with final.pkgs.lib; let
 
   externalPlugins = [
     (mkNvimPlugin inputs.opencode-nvim "opencode-nvim")
+    (mkNvimPlugin inputs.edger "edger")
   ];
 
   all-plugins =

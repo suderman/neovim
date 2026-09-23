@@ -15,6 +15,9 @@
     # https://github.com/amrbashir/nvim-docs-view
     nvim-docs-view.url = "github:amrbashir/nvim-docs-view";
     nvim-docs-view.flake = false;
+
+    edger.url = "github:suderman/edger";
+    edger.flake = false;
   };
 
   outputs = inputs: let
