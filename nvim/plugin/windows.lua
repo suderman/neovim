@@ -4,7 +4,7 @@ if vim.g.did_load_windows_plugin then
 end
 vim.g.did_load_windows_plugin = true
 
-require("edger").setup({ modifier = "M" })
+require("edger").setup()
 
 vim.keymap.set("n", "<leader>fq", function()
   vim.cmd("fclose!")
