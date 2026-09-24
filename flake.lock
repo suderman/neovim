@@ -3,11 +3,11 @@
     "edger": {
       "flake": false,
       "locked": {
-        "lastModified": 1790265903,
-        "narHash": "sha256-3S1ush3pUsFUdDwMh12jHAsaUp4sqVSSVR0VNHFmpH0=",
+        "lastModified": 1790267700,
+        "narHash": "sha256-oET1yzKUChRG543Ctvfk51jflu+GQJIlg1FpSpE0hHU=",
         "owner": "suderman",
         "repo": "edger",
-        "rev": "a46f9530c627b4f2a3a7c086b36f4dde439f4d69",
+        "rev": "d897775ec3d9b057dc17944f3417203e95ed3b37",
         "type": "github"
       },
       "original": {
