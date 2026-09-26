@@ -6,6 +6,25 @@ vim.g.did_load_windows_plugin = true
 
 require("edger").setup()
 
+-- Snacks' sidebar is a window, but closing the last editor should close the sidebar instead.
+vim.keymap.set("n", "<M-w>", function()
+  local ok, snacks = pcall(require, "snacks")
+  local explorer = ok and snacks.picker.get({ source = "explorer" })[1]
+  if explorer then
+    local splits = 0
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+      if vim.api.nvim_win_get_config(win).relative == "" and not vim.w[win].snacks_layout then
+        splits = splits + 1
+      end
+    end
+    if splits == 1 then
+      explorer:close()
+      return
+    end
+  end
+  vim.cmd.EdgerClose()
+end, { silent = true, desc = "Edger close" })
+
 vim.keymap.set("n", "<leader>fq", function()
   vim.cmd("fclose!")
 end, { silent = true, desc = "Close floating windows" })

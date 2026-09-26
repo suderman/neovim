@@ -42,6 +42,10 @@ function M.setup(snacks)
         diagnostics = picker_action(snacks, "diagnostics", "list"),
         diagnostics_buffer = picker_action(snacks, "diagnostics_buffer", "list"),
         explorer = picker_action(snacks, "explorer", "list"),
+        explorer_vertical = function(picker)
+          vim.api.nvim_set_current_win(picker.main)
+          vim.cmd.EdgerVertical()
+        end,
         files = picker_action(snacks, "files", "input"),
         grep = picker_action(snacks, "grep", "input"),
         jumps = picker_action(snacks, "jumps", "list"),
@@ -66,13 +70,27 @@ function M.setup(snacks)
           layout = { hidden = { "input", "preview" } },
           replace_netrw = true,
           win = {
-            input = { keys = { ["<Esc>"] = { "false", mode = { "n", "x" } } } },
+            input = {
+              keys = {
+                ["<Esc>"] = { "false", mode = { "n", "x" } },
+                ["<a-h>"] = {
+                  function()
+                    vim.cmd.EdgerLeft()
+                  end,
+                  mode = "n",
+                },
+                ["<a-i>"] = { "explorer_vertical", mode = "n" },
+                ["<a-w>"] = { "close", mode = "n" },
+              },
+            },
             list = {
               keys = {
                 ["<Esc>"] = { "false", mode = { "n", "x" } },
                 ["<a-h>"] = function()
                   vim.cmd.EdgerLeft()
                 end,
+                ["<a-i>"] = "explorer_vertical",
+                ["<a-w>"] = "close",
               },
             },
           },
