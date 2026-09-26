@@ -67,7 +67,14 @@ function M.setup(snacks)
           replace_netrw = true,
           win = {
             input = { keys = { ["<Esc>"] = { "false", mode = { "n", "x" } } } },
-            list = { keys = { ["<Esc>"] = { "false", mode = { "n", "x" } } } },
+            list = {
+              keys = {
+                ["<Esc>"] = { "false", mode = { "n", "x" } },
+                ["<a-h>"] = function()
+                  vim.cmd.EdgerLeft()
+                end,
+              },
+            },
           },
         },
       },
