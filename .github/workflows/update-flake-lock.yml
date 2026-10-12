@@ -1,8 +1,7 @@
 name: Update flake.lock
 
 on:
-  schedule:
-    - cron: '0 3 * * 0' # every Sunday at 3:00 AM UTC
+  # Started on Sundays by suderman/nixos's update-flake-lock workflow.
   workflow_dispatch:
 
 jobs:
