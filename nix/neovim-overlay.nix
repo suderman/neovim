@@ -121,8 +121,8 @@ with final.pkgs.lib; let
     djlint
     gcc
     luaPackages.luacheck
-    php83Packages.php-cs-fixer
-    php83Packages.php-codesniffer
+    php84Packages.php-cs-fixer
+    php84Packages.php-codesniffer
     phpstan
     deadnix
     statix
